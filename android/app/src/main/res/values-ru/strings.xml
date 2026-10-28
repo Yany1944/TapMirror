@@ -30,6 +30,16 @@
     <string name="err_approval_timeout">Телефон не подтвердили на ПК.</string>
     <string name="err_pc_failed">ПК не смог начать трансляцию: %1$s</string>
 
+    <string name="update_available">Доступна версия TapMirror %1$s (у вас %2$s)</string>
+    <string name="update_body">Обновления исправляют ошибки и сохраняют совместимость приложения на телефоне с программой на ПК. Обновите и программу на ПК: её меню в трее это предложит.</string>
+    <string name="update">Обновить</string>
+    <string name="whats_new">Что нового</string>
+    <string name="update_downloading">Загрузка… %1$d%%</string>
+    <string name="update_allow">Разрешите TapMirror устанавливать обновления и снова нажмите «Обновить».</string>
+    <string name="update_stop_first">Сначала остановите трансляцию: обновление закроет приложение.</string>
+    <string name="update_failed">Не удалось обновить: %1$s</string>
+    <string name="update_bad_checksum">Скачанный файл не совпадает с контрольной суммой. Попробуйте позже.</string>
+
     <string name="setup">Настройка</string>
     <string name="step_pc">1. TapMirror на ПК</string>
     <string name="step_pc_body">Скачайте TapMirror.exe на ПК с Windows и запустите. Он живёт в трее (без окон и консоли) и открывает scrcpy, когда вы нажимаете плитку. scrcpy он может скачать сам.</string>

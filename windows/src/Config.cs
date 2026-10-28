@@ -20,6 +20,7 @@ namespace TapMirror
         public static string Adb = "";
         public static string ExtraArgs = "";
         public static bool FirstRunDone;
+        public static bool CheckUpdates = true;
         /// <summary>Phone id → name, for phones allowed or blocked on this PC.</summary>
         public static readonly Dictionary<string, string> Allowed = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> Blocked = new Dictionary<string, string>();
@@ -41,6 +42,7 @@ namespace TapMirror
                     else if (k == "adb") Adb = v;
                     else if (k == "args") ExtraArgs = v;
                     else if (k == "firstrun.done") FirstRunDone = v == "1";
+                    else if (k == "updates") CheckUpdates = v != "0";
                     else if (k.StartsWith("allow.")) Allowed[k.Substring(6)] = v;
                     else if (k.StartsWith("block.")) Blocked[k.Substring(6)] = v;
                 }
@@ -63,11 +65,13 @@ namespace TapMirror
                 sb.AppendLine("# scrcpy = folder with scrcpy.exe (empty: found automatically)");
                 sb.AppendLine("# adb    = path to adb.exe (empty: the one next to scrcpy)");
                 sb.AppendLine("# args   = extra scrcpy options added to every session, e.g. --window-borderless");
+                sb.AppendLine("# updates = 0 turns off the check for new versions (on start and once a day)");
                 sb.AppendLine("pc.id=" + PcId);
                 sb.AppendLine("scrcpy=" + ScrcpyDir);
                 sb.AppendLine("adb=" + Adb);
                 sb.AppendLine("args=" + ExtraArgs);
                 sb.AppendLine("firstrun.done=" + (FirstRunDone ? "1" : "0"));
+                sb.AppendLine("updates=" + (CheckUpdates ? "1" : "0"));
                 foreach (var kv in Allowed) sb.AppendLine("allow." + kv.Key + "=" + kv.Value);
                 foreach (var kv in Blocked) sb.AppendLine("block." + kv.Key + "=" + kv.Value);
                 Directory.CreateDirectory(AppData);

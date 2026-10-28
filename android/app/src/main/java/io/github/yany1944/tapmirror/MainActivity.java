@@ -68,6 +68,8 @@ public class MainActivity extends Activity {
             });
         }).start());
         findViewById(R.id.btnIssue).setOnClickListener(v -> open(REPO + "/issues/new/choose"));
+        findViewById(R.id.btnUpdate).setOnClickListener(v -> update());
+        findViewById(R.id.btnWhatsNew).setOnClickListener(v -> open(REPO + "/releases/tag/" + updateTag));
         findViewById(R.id.btnFind).setOnClickListener(v -> findPcs(p.pcIp()));
         findViewById(R.id.btnAddress).setOnClickListener(v -> askAddress());
         findViewById(R.id.btnRoot).setOnClickListener(v -> checkRoot());
@@ -110,6 +112,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        checkUpdate();
         refreshSetup();
         handler.post(poll);
     }
@@ -204,6 +207,57 @@ public class MainActivity extends Activity {
     }
 
     /** Searches the network; {@code knownIp} is asked first, directly (works through VPNs). */
+    private String updateTag;
+
+    /** Shows the update card if GitHub has a newer release (asks GitHub at most once an hour). */
+    private void checkUpdate() {
+        new Thread(() -> {
+            String tag;
+            try {
+                tag = Updater.newerTag(this, p);
+            } catch (Exception e) {
+                return; // offline or GitHub unreachable: try next time
+            }
+            runOnUiThread(() -> {
+                updateTag = tag;
+                findViewById(R.id.cardUpdate).setVisibility(tag != null ? View.VISIBLE : View.GONE);
+                if (tag != null) {
+                    ((TextView) findViewById(R.id.tvUpdate)).setText(getString(R.string.update_available,
+                            Updater.version(tag), Updater.currentVersion(this)));
+                }
+            });
+        }).start();
+    }
+
+    private void update() {
+        if (updateTag == null) return;
+        if (MirrorService.state != MirrorService.IDLE) {
+            Toast.makeText(this, R.string.update_stop_first, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (!getPackageManager().canRequestPackageInstalls()) {
+            Toast.makeText(this, R.string.update_allow, Toast.LENGTH_LONG).show();
+            startActivity(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,
+                    Uri.parse("package:" + getPackageName())));
+            return;
+        }
+        Button btn = findViewById(R.id.btnUpdate);
+        btn.setEnabled(false);
+        String tag = updateTag;
+        new Thread(() -> {
+            try {
+                Updater.install(this, tag, pct -> runOnUiThread(() -> btn.setText(getString(R.string.update_downloading, pct))));
+            } catch (Exception e) {
+                String msg = e.getMessage() != null ? e.getMessage() : e.toString();
+                runOnUiThread(() -> Toast.makeText(this, getString(R.string.update_failed, msg), Toast.LENGTH_LONG).show());
+            }
+            runOnUiThread(() -> {
+                btn.setEnabled(true);
+                btn.setText(R.string.update);
+            });
+        }).start();
+    }
+
     private void findPcs(String knownIp) {
         TextView tv = findViewById(R.id.tvPc);
         tv.setText(R.string.find_searching);

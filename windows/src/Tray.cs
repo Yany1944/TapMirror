@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ using Microsoft.Win32;
 
 namespace TapMirror
 {
-    /// <summary>Entry point and the tray icon. Idle cost: one blocked UDP socket, no timers, no polling.</summary>
+    /// <summary>Entry point and the tray icon. Idle cost: one blocked UDP socket and a once-a-day update check.</summary>
     static class Tray
     {
         public const string Repo = "https://github.com/Yany1944/TapMirror";
@@ -17,14 +18,22 @@ namespace TapMirror
 
         static NotifyIcon icon;
         static SynchronizationContext ui;
+        static System.Threading.Timer updateTimer;
+        static bool updateBalloonShown; // the last balloon is the update offer, so a click on it means "update"
+        static bool updating;
+        static string restartWith; // set by a finished update: start this exe once we have exited
 
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            bool fresh;
-            using (new Mutex(true, @"Local\TapMirrorTray", out fresh))
+            bool afterUpdate = args.Contains("--after-update");
+            using (var single = new Mutex(false, @"Local\TapMirrorTray"))
             {
-                if (!fresh)
+                bool owned;
+                // after an update the old copy may still be closing
+                try { owned = single.WaitOne(afterUpdate ? 15000 : 0); }
+                catch (AbandonedMutexException) { owned = true; }
+                if (!owned)
                 {
                     MessageBox.Show("TapMirror is already running. Look for its icon in the tray.", "TapMirror");
                     return;
@@ -64,10 +73,83 @@ namespace TapMirror
                 Server.Changed += () => icon.Text = Trim63("TapMirror: " + Server.StatusText());
                 icon.Text = Trim63("TapMirror: " + Server.StatusText());
 
+                Updater.CleanUp();
+                if (afterUpdate) Balloon("TapMirror was updated to " + Diag.Version + ".", ToolTipIcon.Info);
                 if (!Config.FirstRunDone) ui.Post(_ => FirstRun(), null);
+                icon.BalloonTipClicked += (s, e) => { if (updateBalloonShown) AskUpdate(); };
+                if (args.Contains("--check-updates"))
+                    new Thread(() => CheckUpdates(true)) { IsBackground = true }.Start();
+                else if (Config.CheckUpdates)
+                    updateTimer = new System.Threading.Timer(_ => CheckUpdates(false), null,
+                        TimeSpan.FromSeconds(15), TimeSpan.FromDays(1));
                 Application.Run();
                 icon.Visible = false;
+                single.ReleaseMutex();
             }
+            // only now, with the port and the single-instance lock free
+            if (restartWith != null) Updater.Restart(restartWith);
+        }
+
+        static void CheckUpdates(bool manual)
+        {
+            try
+            {
+                if (Updater.Check())
+                {
+                    Log.Write("update available: " + Updater.NewVersion);
+                    ui.Post(_ =>
+                    {
+                        if (manual) { AskUpdate(); return; }
+                        icon.ShowBalloonTip(10000, "TapMirror " + Updater.NewVersion + " is available",
+                            "You have " + Diag.Version + ". Click here to update, or use the tray menu.", ToolTipIcon.Info);
+                        updateBalloonShown = true;
+                    }, null);
+                }
+                else if (manual)
+                {
+                    Balloon("You have the latest version (" + Diag.Version + ").", ToolTipIcon.Info);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Write("update check failed: " + (e.InnerException ?? e).Message);
+                if (manual) Balloon("Couldn't check for updates: " + (e.InnerException ?? e).Message, ToolTipIcon.Warning);
+            }
+        }
+
+        static void AskUpdate()
+        {
+            updateBalloonShown = false;
+            if (updating || Updater.NewTag == null) return;
+            var answer = MessageBox.Show(
+                "TapMirror " + Updater.NewVersion + " is available. You have " + Diag.Version + ".\n\n" +
+                "Update now? TapMirror downloads it from GitHub, checks it and restarts. " +
+                "If you're mirroring, the window stays open but the phone ends the session.\n\n" +
+                "Yes: update.   No: later (tray menu → Update).   Cancel: see what's new.",
+                "TapMirror", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (answer == DialogResult.Cancel) { Process.Start(Updater.ReleasePage); return; }
+            if (answer != DialogResult.Yes) return;
+            updating = true;
+            new Thread(() =>
+            {
+                try
+                {
+                    string exe = Updater.Download(msg => ui.Post(_ => icon.Text = Trim63(msg), null));
+                    ui.Post(_ =>
+                    {
+                        restartWith = exe;
+                        icon.Visible = false;
+                        Application.Exit();
+                    }, null);
+                }
+                catch (Exception e)
+                {
+                    updating = false;
+                    Balloon("Couldn't update: " + (e.InnerException ?? e).Message +
+                            " You can download it from the release page (tray menu → What's new).", ToolTipIcon.Error);
+                    ui.Post(_ => icon.Text = Trim63("TapMirror: " + Server.StatusText()), null);
+                }
+            }) { IsBackground = true }.Start();
         }
 
         public static Icon AppIcon(Size size)
@@ -84,7 +166,7 @@ namespace TapMirror
         public static void Balloon(string text, ToolTipIcon kind)
         {
             Log.Write(text);
-            ui.Post(_ => icon.ShowBalloonTip(6000, "TapMirror", text, kind), null);
+            ui.Post(_ => { updateBalloonShown = false; icon.ShowBalloonTip(6000, "TapMirror", text, kind); }, null);
         }
 
         static void FirstRun()
@@ -116,6 +198,13 @@ namespace TapMirror
             var m = icon.ContextMenuStrip;
             m.Items.Clear();
             m.Items.Add(new ToolStripMenuItem(Server.StatusText()) { Enabled = false });
+            if (Updater.NewTag != null)
+            {
+                var upd = new ToolStripMenuItem("Update to " + Updater.NewVersion + "…", null, (s, e) => AskUpdate());
+                upd.Font = new Font(upd.Font, FontStyle.Bold);
+                m.Items.Add(upd);
+                m.Items.Add("What's new in " + Updater.NewVersion, null, (s, e) => Process.Start(Updater.ReleasePage));
+            }
             // for typing into the phone app when searching can't work (some VPNs)
             string addrs = Server.LanAddresses();
             if (addrs != "") m.Items.Add(new ToolStripMenuItem("This PC: " + addrs) { Enabled = false });
@@ -162,6 +251,7 @@ namespace TapMirror
             m.Items.Add("Copy info for a bug report", null, (s, e) => CopyReport());
             m.Items.Add("Report a bug", null, (s, e) => Process.Start(Repo + "/issues/new/choose"));
             m.Items.Add("Help (GitHub)", null, (s, e) => Process.Start(Repo));
+            m.Items.Add("Check for updates", null, (s, e) => new Thread(() => CheckUpdates(true)) { IsBackground = true }.Start());
             m.Items.Add(new ToolStripMenuItem("TapMirror " + Diag.Version) { Enabled = false });
             m.Items.Add(new ToolStripSeparator());
             m.Items.Add("Exit", null, (s, e) => { icon.Visible = false; Application.Exit(); });
@@ -175,6 +265,7 @@ namespace TapMirror
                 ui.Post(_ =>
                 {
                     Clipboard.SetText(text);
+                    updateBalloonShown = false;
                     icon.ShowBalloonTip(4000, "TapMirror", "Copied. Paste it into the bug report on GitHub.", ToolTipIcon.Info);
                 }, null);
             }) { IsBackground = true }.Start();

@@ -33,6 +33,17 @@
     <string name="err_approval_timeout">Nobody confirmed the phone on the PC.</string>
     <string name="err_pc_failed">The PC couldn\'t start mirroring: %1$s</string>
 
+    <!-- updates -->
+    <string name="update_available">TapMirror %1$s is available (you have %2$s)</string>
+    <string name="update_body">Updates fix bugs and keep the phone and PC apps compatible. Update the PC app too: its tray menu offers it.</string>
+    <string name="update">Update</string>
+    <string name="whats_new">What\'s new</string>
+    <string name="update_downloading">Downloading… %1$d%%</string>
+    <string name="update_allow">Allow TapMirror to install updates, then tap Update again.</string>
+    <string name="update_stop_first">Stop mirroring first: the update closes the app.</string>
+    <string name="update_failed">Update failed: %1$s</string>
+    <string name="update_bad_checksum">The downloaded file doesn\'t match its checksum. Try again later.</string>
+
     <!-- setup -->
     <string name="setup">Setup</string>
     <string name="ok" translatable="false">✔</string>

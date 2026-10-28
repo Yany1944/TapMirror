@@ -11,6 +11,22 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- shown when a newer release is on GitHub -->
+        <LinearLayout
+            android:id="@+id/cardUpdate"
+            style="@style/Card"
+            android:visibility="gone">
+            <TextView android:id="@+id/tvUpdate" style="@style/StepTitle" />
+            <TextView style="@style/Body" android:text="@string/update_body" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button android:id="@+id/btnUpdate" style="@style/Action" android:text="@string/update" />
+                <Button android:id="@+id/btnWhatsNew" style="@style/Action" android:text="@string/whats_new" />
+            </LinearLayout>
+        </LinearLayout>
+
         <!-- status -->
         <LinearLayout style="@style/Card">
             <TextView

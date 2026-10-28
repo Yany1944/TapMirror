@@ -6,8 +6,13 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-29
+
 ### Added
 
+- Updates. The PC app checks GitHub on start and once a day; when a newer release is out it shows a tray notification and an "Update to …" menu item, then downloads the new exe, checks its SHA-256, swaps it in and restarts. "Check for updates" is in the tray menu, and `updates=0` in the ini turns the check off. / Обновления. Программа на ПК проверяет GitHub при запуске и раз в день; если вышла новая версия, показывает уведомление и пункт «Update to …» в меню, затем скачивает новый exe, проверяет SHA-256, заменяет его и перезапускается. В меню есть «Check for updates», а `updates=0` в ini выключает проверку.
+- The phone app checks for a newer release when you open it (at most once an hour) and shows a card with "Update" and "What's new". "Update" downloads the APK, checks its SHA-256 and installs it over the current version through Android's installer. / Приложение на телефоне при открытии (не чаще раза в час) проверяет новый выпуск и показывает карточку с кнопками «Обновить» и «Что нового». «Обновить» скачивает APK, проверяет SHA-256 и ставит его поверх текущей версии через установщик Android.
+- `TapMirror.exe --check-updates` checks right away and offers the update. / `TapMirror.exe --check-updates` сразу проверяет обновления и предлагает установить.
 - [docs/ai-setup.md](docs/ai-setup.md): a setup guide for AI assistants, and an "Easy setup" section in the README with a message to paste into one. / Инструкция для ИИ-помощников и раздел «Быстрая настройка» в README с сообщением, которое достаточно вставить в чат.
 
 ### Fixed
@@ -56,5 +61,6 @@ First public version. Tested on one phone and one PC (see "Tested on" in the REA
 
 </details>
 
-[Unreleased]: https://github.com/Yany1944/TapMirror/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Yany1944/TapMirror/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/Yany1944/TapMirror/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/Yany1944/TapMirror/releases/tag/v0.1.0

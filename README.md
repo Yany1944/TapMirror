@@ -40,6 +40,7 @@ scrcpy already shows an Android screen on a PC with very little lag and lets you
 - It works with root and without. Root was tested with Magisk; KernelSU and APatch provide the same `su`, so they should work too. Without root you grant one permission from the PC once.
 - The phone app is also the setup guide: a checklist with a button for each step, plus resolution, bitrate, frame rate, codec, audio and other scrcpy settings.
 - The first time a phone asks to mirror, the PC shows a window to allow or block it.
+- Both apps tell you when a new version is out and update themselves: the phone app shows a card when you open it, the PC app a tray notification. Each download is checked against the release's SHA-256 checksums.
 - English and Russian.
 
 ## How it works
@@ -147,7 +148,7 @@ On the phone, under "Mirroring" in the app:
 
 Notifications (step 6): with them on, a notification shows the status and a Stop button while mirroring. Android doesn't let an app hide that notification itself, so for "tile only" you turn TapMirror's notifications off in system settings; the step's button opens that page.
 
-On the PC, `%APPDATA%\TapMirror\TapMirror.ini` holds the scrcpy folder, an optional path to adb, extra scrcpy options for every session (for example `args=--window-borderless`) and the allowed and blocked phones. The tray menu covers the usual cases. The log is in `%LOCALAPPDATA%\TapMirror\TapMirror.log` (tray menu → "Open log").
+On the PC, `%APPDATA%\TapMirror\TapMirror.ini` holds the scrcpy folder, an optional path to adb, extra scrcpy options for every session (for example `args=--window-borderless`), `updates=0` to turn off the update check, and the allowed and blocked phones. The tray menu covers the usual cases. The log is in `%LOCALAPPDATA%\TapMirror\TapMirror.log` (tray menu → "Open log").
 
 ## Tested on
 
@@ -170,6 +171,7 @@ Not tested yet: other phones and Android 11 to 16, KernelSU and APatch, Windows 
 - Tile only. With notifications off, errors appear only on the tile ("Failed, open app") and in the app.
 - Windows only. There is no PC app for macOS or Linux yet, and the PC app itself is in English.
 - AV1. Most phones have no AV1 encoder; if mirroring fails with AV1, use H.264 or H.265.
+- Updates. To find new versions, both apps ask GitHub (`api.github.com`) about the latest release: the PC app on start and once a day, the phone app when you open it, at most once an hour. Nothing else is sent.
 - Security. Messages between the phone and the PC aren't encrypted or signed, so use TapMirror on networks you trust, like your home Wi-Fi. While a session runs, adb on the phone is reachable from the network, though it still only accepts PCs you have allowed. Details are in [docs/protocol.md](docs/protocol.md#security-notes).
 
 ## Troubleshooting
