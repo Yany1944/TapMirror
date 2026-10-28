@@ -15,6 +15,7 @@ Project page: https://github.com/Yany1944/TapMirror (the README there has more d
   - adb (only if scrcpy isn't used): `https://dl.google.com/android/repository/platform-tools-latest-windows.zip`
 - Never: root the phone or change its root setup, unlock the bootloader, flash anything, factory reset, turn off antivirus, SmartScreen or the whole firewall, or change the network type without the person's clear consent.
 - Things only the person can do (tapping "Allow" on the phone, clicking "Yes" in a Windows dialog, picking options in phone settings): describe exactly what they will see and wait for them to confirm.
+- Never start `TapMirror.exe` directly from your own shell (`Start-Process`, `&`, `cmd /c start`). Some AI tools, for example the Claude desktop app, run as a Windows package or inside a job: a program started from them lives in their sandbox, its settings go to a private copy of AppData, and it closes when the tool closes. Start it through Explorer as in step 3, or ask the person to double-click it.
 - If a step fails, read the logs (step 9) before guessing. Don't loop on the same command.
 
 ## Shared variables
@@ -83,7 +84,13 @@ Get-Content "$dir\SHA256SUMS.txt"
 
 The hash must equal the `TapMirror.exe` line in `SHA256SUMS.txt`. If it doesn't, stop and tell the person.
 
-Start it: `Start-Process "$dir\TapMirror.exe"`. Tell the person what to expect:
+Start it through Explorer, so it runs on its own and not inside your tool (see "How to work"):
+
+```powershell
+explorer.exe "$dir\TapMirror.exe"
+```
+
+If that doesn't start it, ask the person to open the folder and double-click `TapMirror.exe`. Tell them what to expect:
 
 - Maybe "Windows protected your PC" (the file isn't signed): click "More info", then "Run anyway".
 - "Download the latest official scrcpy…?": click "Yes". Without scrcpy nothing works. If they already have scrcpy somewhere, they can say "No" and later pick its folder in the tray menu → scrcpy → "Choose scrcpy folder…".
@@ -213,6 +220,7 @@ Common causes:
 | "Root access was denied" | The root manager didn't allow TapMirror (step 7). |
 | Video codec error | They chose AV1 or H.265 and the phone can't encode it: set H.264 in the app. |
 | Session stops after some minutes | The phone maker's battery saver kills the app: set TapMirror's battery usage to "Unrestricted" in the app's system settings. |
+| TapMirror disappears from the tray when your AI tool closes, or forgets its settings | It was started from inside the tool. Exit it from the tray (or Task Manager) and start it with `explorer.exe` or a double-click. It starts with Windows on its own after that. |
 
 If it still doesn't work, help them report it: in the phone app, Troubleshooting → "Copy info for a bug report"; in the PC tray menu → "Copy info for a bug report"; then open https://github.com/Yany1944/TapMirror/issues/new?template=bug_report.yml and fill in the form with both pastes and a short description. Local addresses like `192.168.x.x` are fine to share.
 

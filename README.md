@@ -183,6 +183,7 @@ Not tested yet: other phones and Android 11 to 16, KernelSU and APatch, Windows 
 | A banking app complains about debugging | Set "After mirroring" to "Always turn debugging off". |
 | Lag or low quality | Lower the resolution or bitrate, use 5 GHz Wi-Fi, connect the PC by cable if you can. |
 | "Port 27199 is already in use" on the PC | Another copy of TapMirror is running. Close it from the tray, or end it in Task Manager. |
+| TapMirror closes when an AI assistant or another program that started it closes | Some apps (for example the Claude desktop app) run what they start inside their own sandbox. Start TapMirror by double-clicking it or from autostart instead. |
 
 ## Reporting a bug
 

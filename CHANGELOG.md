@@ -13,6 +13,7 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 ### Fixed
 
 - `SHA256SUMS.txt` uses LF line endings, so `sha256sum -c` works on Linux and macOS. / В `SHA256SUMS.txt` переводы строк LF, поэтому `sha256sum -c` работает в Linux и macOS.
+- The AI setup guide starts TapMirror through Explorer. Started from an AI tool's own shell (for example the Claude desktop app), it ran in the tool's sandbox, kept its settings in a private copy and closed with the tool. / Инструкция для ИИ запускает TapMirror через Проводник: запущенный из консоли ИИ-инструмента (например, Claude для компьютера), он работал в его «песочнице», хранил настройки в отдельной копии и закрывался вместе с ним.
 
 ## [0.1.0] - 2026-10-28
 
