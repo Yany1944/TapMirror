@@ -66,8 +66,6 @@
 
     <string name="step_dev">4. Developer options</string>
     <string name="step_dev_body">adb needs Developer options to be on: Settings → About phone → tap \"Build number\" 7 times. Without root, also open Wireless debugging once on your home Wi-Fi and allow it.</string>
-    <string name="dev_on">Developer options: on</string>
-    <string name="dev_off">Developer options: off</string>
     <string name="open_dev">Open developer options</string>
 
     <string name="step_tile">5. Quick settings tile</string>
@@ -108,4 +106,8 @@
     <string name="trouble">Troubleshooting</string>
     <string name="trouble_body">• PC not found: make sure TapMirror is running (tray icon) and both devices are on the same network. Guest networks and \"AP isolation\" block this. In the tray menu, choose \"Allow through Windows Firewall\".\n• Some banking and government apps refuse to work while debugging is on. TapMirror turns it on only while you mirror; set \"After mirroring\" to \"Always turn debugging off\".\n• Without root, Wireless debugging turns itself off when you change Wi-Fi networks; allow it once on each network.\n• The phone may ask \"Allow USB debugging?\" for a new PC: tick \"Always allow\".</string>
     <string name="github">Source code and help on GitHub</string>
+    <string name="report_body">Found a bug? Copy the info below and paste it into the bug report. It has the app and Android versions, your setup and the app\'s recent log. It doesn\'t include anything from other apps.</string>
+    <string name="copy_report">Copy info for a bug report</string>
+    <string name="report_copied">Copied. Paste it into the bug report on GitHub.</string>
+    <string name="report_bug">Report a bug</string>
 </resources>

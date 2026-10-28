@@ -80,7 +80,6 @@
         <!-- 4. developer options -->
         <LinearLayout style="@style/Card">
             <TextView style="@style/StepTitle" android:text="@string/step_dev" />
-            <TextView android:id="@+id/tvDev" style="@style/Status" />
             <TextView style="@style/Body" android:text="@string/step_dev_body" />
             <Button android:id="@+id/btnDev" style="@style/Action" android:text="@string/open_dev" />
         </LinearLayout>
@@ -129,6 +128,9 @@
 
         <LinearLayout style="@style/Card">
             <TextView style="@style/Body" android:layout_marginTop="0dp" android:text="@string/trouble_body" />
+            <TextView style="@style/Body" android:layout_marginTop="12dp" android:text="@string/report_body" />
+            <Button android:id="@+id/btnReport" style="@style/Action" android:text="@string/copy_report" />
+            <Button android:id="@+id/btnIssue" style="@style/Action" android:text="@string/report_bug" />
             <Button android:id="@+id/btnGithub" style="@style/Action" android:text="@string/github" />
             <TextView
                 android:id="@+id/tvVersion"

@@ -60,6 +60,14 @@ public class MainActivity extends Activity {
         });
         findViewById(R.id.btnDownload).setOnClickListener(v -> open(REPO + "/releases/latest"));
         findViewById(R.id.btnGithub).setOnClickListener(v -> open(REPO));
+        findViewById(R.id.btnReport).setOnClickListener(v -> new Thread(() -> {
+            String report = BugReport.collect(this, p);
+            runOnUiThread(() -> {
+                getSystemService(ClipboardManager.class).setPrimaryClip(ClipData.newPlainText("TapMirror", report));
+                Toast.makeText(this, R.string.report_copied, Toast.LENGTH_LONG).show();
+            });
+        }).start());
+        findViewById(R.id.btnIssue).setOnClickListener(v -> open(REPO + "/issues/new/choose"));
         findViewById(R.id.btnFind).setOnClickListener(v -> findPcs(p.pcIp()));
         findViewById(R.id.btnAddress).setOnClickListener(v -> askAddress());
         findViewById(R.id.btnRoot).setOnClickListener(v -> checkRoot());
@@ -150,8 +158,7 @@ public class MainActivity extends Activity {
         boolean wss = DebugSwitch.hasSecureSettings(this);
         mark(R.id.tvWss, wss, getString(wss ? R.string.access_wss_ok : R.string.access_wss_no));
 
-        boolean dev = Settings.Global.getInt(getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) == 1;
-        mark(R.id.tvDev, dev, getString(dev ? R.string.dev_on : R.string.dev_off));
+        // no status for Developer options: Android reports them as off to apps either way
 
         boolean tile = p.sp.getBoolean("tile_added", false);
         mark(R.id.tvTile, tile, getString(tile ? R.string.tile_added : R.string.tile_not_added));

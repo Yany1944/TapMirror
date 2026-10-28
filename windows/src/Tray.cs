@@ -159,9 +159,25 @@ namespace TapMirror
             auto.Click += (s, e) => SetAutostart(!IsAutostart());
             m.Items.Add(auto);
             m.Items.Add("Open log", null, (s, e) => { if (File.Exists(Log.FilePath)) Process.Start("notepad.exe", "\"" + Log.FilePath + "\""); });
+            m.Items.Add("Copy info for a bug report", null, (s, e) => CopyReport());
+            m.Items.Add("Report a bug", null, (s, e) => Process.Start(Repo + "/issues/new/choose"));
             m.Items.Add("Help (GitHub)", null, (s, e) => Process.Start(Repo));
+            m.Items.Add(new ToolStripMenuItem("TapMirror " + Diag.Version) { Enabled = false });
             m.Items.Add(new ToolStripSeparator());
             m.Items.Add("Exit", null, (s, e) => { icon.Visible = false; Application.Exit(); });
+        }
+
+        static void CopyReport()
+        {
+            new Thread(() =>
+            {
+                string text = Diag.Collect();
+                ui.Post(_ =>
+                {
+                    Clipboard.SetText(text);
+                    icon.ShowBalloonTip(4000, "TapMirror", "Copied. Paste it into the bug report on GitHub.", ToolTipIcon.Info);
+                }, null);
+            }) { IsBackground = true }.Start();
         }
 
         static void DownloadScrcpy()

@@ -1,0 +1,118 @@
+name: Bug report / Сообщить об ошибке
+description: Something doesn't work as described / Что-то работает не так, как описано
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. You can write in English or Russian.
+        Спасибо, что сообщаете об ошибке. Писать можно по-английски или по-русски.
+
+        **Quickest way to fill this in / Как заполнить быстрее всего:**
+        1. Phone: TapMirror → Troubleshooting → "Copy info for a bug report".
+           Телефон: TapMirror → «Если не работает» → «Скопировать сведения для отчёта».
+        2. PC: tray menu → "Copy info for a bug report".
+           Компьютер: меню в трее → «Copy info for a bug report».
+
+        Security problems: please don't post them here, see [SECURITY.md](https://github.com/Yany1944/TapMirror/blob/main/SECURITY.md).
+        Проблемы безопасности: не публикуйте их здесь, см. [SECURITY.md](https://github.com/Yany1944/TapMirror/blob/main/SECURITY.md).
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you start / Перед отправкой
+      options:
+        - label: I searched the existing issues and this one isn't there yet. / Я поискал среди issue, такой ещё нет.
+          required: true
+        - label: I use the latest release of both the phone app and the PC app. / У меня последняя версия приложения на телефоне и программы на ПК.
+          required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened? / Что произошло?
+      description: What you saw, including any error text on the tile, in the app or on the PC. / Что вы увидели, включая текст ошибки на плитке, в приложении или на ПК.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / Как повторить
+      placeholder: |
+        1. Turn on the VPN / Включить VPN
+        2. Tap the tile / Нажать плитку
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect? / Что ожидали?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Debugging access / Доступ к отладке
+      options:
+        - Root (Magisk)
+        - Root (KernelSU)
+        - Root (APatch)
+        - Root (other / другое)
+        - No root, Wireless debugging / Без root, отладка по Wi-Fi
+        - Not sure / Не знаю
+    validations:
+      required: true
+
+  - type: input
+    id: phone
+    attributes:
+      label: Phone and Android version / Телефон и версия Android
+      placeholder: Pixel 7 Pro, Android 16
+    validations:
+      required: true
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version / Версия Windows
+      placeholder: Windows 11 24H2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: network
+    attributes:
+      label: Network / Сеть
+      description: Select everything that applies / Отметьте всё подходящее
+      multiple: true
+      options:
+        - The PC is on Wi-Fi / ПК подключён по Wi-Fi
+        - The PC is on a cable / ПК подключён кабелем
+        - A VPN is on, on the phone / На телефоне включён VPN
+        - Windows Firewall is on / Брандмауэр Windows включён
+        - Guest network or mesh Wi-Fi / Гостевая сеть или mesh Wi-Fi
+
+  - type: textarea
+    id: phone-info
+    attributes:
+      label: Info from the phone app / Сведения из приложения на телефоне
+      description: TapMirror → Troubleshooting → "Copy info for a bug report", then paste here. / TapMirror → «Если не работает» → «Скопировать сведения для отчёта», затем вставьте сюда.
+      render: text
+
+  - type: textarea
+    id: pc-info
+    attributes:
+      label: Info from the PC / Сведения с компьютера
+      description: Tray menu → "Copy info for a bug report", then paste here. / Меню в трее → «Copy info for a bug report», затем вставьте сюда.
+      render: text
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else / Что-то ещё
+      description: Screenshots, a video, other apps that might interfere (firewalls, VPNs, other adb tools). / Скриншоты, видео, другие программы, которые могут мешать (брандмауэры, VPN, другие программы с adb).

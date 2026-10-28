@@ -16,4 +16,6 @@ if exist keystore.properties (
   call "%ROOT%android\gradlew.bat" --quiet assembleDebug || exit /b 1
   copy /y app\build\outputs\apk\debug\app-debug.apk "%ROOT%dist\TapMirror.apk" >nul
 )
-echo built dist\TapMirror.exe and dist\TapMirror.apk
+rem checksums for the release page, in the usual "<sha256>  <name>" format
+powershell -NoProfile -Command "Get-FileHash '%ROOT%dist\TapMirror.apk','%ROOT%dist\TapMirror.exe' -Algorithm SHA256 | ForEach-Object { $_.Hash.ToLower() + '  ' + (Split-Path $_.Path -Leaf) } | Set-Content -Encoding ascii '%ROOT%dist\SHA256SUMS.txt'"
+echo built dist\TapMirror.exe, dist\TapMirror.apk and dist\SHA256SUMS.txt

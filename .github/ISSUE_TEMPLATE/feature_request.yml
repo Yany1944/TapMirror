@@ -1,0 +1,40 @@
+name: Feature request / Предложение
+description: An idea for TapMirror / Идея для TapMirror
+title: "[Idea] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        You can write in English or Russian. / Писать можно по-английски или по-русски.
+
+        TapMirror starts [scrcpy](https://github.com/Genymobile/scrcpy); it doesn't do the mirroring itself. Ideas about video, audio or control usually belong to scrcpy, unless they're about a setting TapMirror could pass to it.
+        TapMirror только запускает [scrcpy](https://github.com/Genymobile/scrcpy), саму трансляцию делает он. Идеи про видео, звук и управление обычно относятся к scrcpy, если только речь не о настройке, которую TapMirror мог бы ему передать.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to do? / Что вы хотите сделать?
+      description: Describe the situation, not the solution yet. / Опишите ситуацию, а не решение.
+      placeholder: When I ... I have to ... / Когда я ..., мне приходится ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: How could TapMirror help? / Как TapMirror мог бы помочь?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What do you do now instead? / Как вы обходитесь сейчас?
+
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Help / Помощь
+      options:
+        - label: I could help test or build this. / Я могу помочь проверить или сделать это.

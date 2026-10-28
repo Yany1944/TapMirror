@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or help / Вопрос или помощь
+    url: https://github.com/Yany1944/TapMirror/discussions
+    about: Ask how to set something up, or share how it works on your phone. / Спросите, как что-то настроить, или расскажите, как работает на вашем телефоне.
+  - name: Security problem / Проблема безопасности
+    url: https://github.com/Yany1944/TapMirror/security/advisories/new
+    about: Report it privately, not in a public issue. / Сообщите приватно, не в открытом issue.
+  - name: scrcpy itself / Сам scrcpy
+    url: https://github.com/Genymobile/scrcpy/issues
+    about: Problems with the video, audio or controls that happen with plain scrcpy too. / Проблемы с видео, звуком или управлением, которые есть и в обычном scrcpy.
