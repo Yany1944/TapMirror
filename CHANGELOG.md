@@ -6,6 +6,14 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+### Added
+
+- [docs/ai-setup.md](docs/ai-setup.md): a setup guide for AI assistants, and an "Easy setup" section in the README with a message to paste into one. / Инструкция для ИИ-помощников и раздел «Быстрая настройка» в README с сообщением, которое достаточно вставить в чат.
+
+### Fixed
+
+- `SHA256SUMS.txt` uses LF line endings, so `sha256sum -c` works on Linux and macOS. / В `SHA256SUMS.txt` переводы строк LF, поэтому `sha256sum -c` работает в Linux и macOS.
+
 ## [0.1.0] - 2026-10-28
 
 First public version. Tested on one phone and one PC (see "Tested on" in the README), so expect bugs.

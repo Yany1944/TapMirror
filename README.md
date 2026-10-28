@@ -69,6 +69,20 @@ If the window closes, you tap the tile again, the PC goes to sleep or the phone 
 - Both on the same home network, able to see each other. Guest networks and routers with "AP isolation" or "client isolation" turned on block this.
 - Either root, or a PC with adb once to grant the no-root permission (the tray app can do it for you over USB or with a pairing code).
 
+## Easy setup with an AI assistant
+
+If you use an AI assistant on your PC, it can do the setup with you: check that your phone and PC are suitable, install both apps and tell you what to turn on for your phone, rooted or not. Copy this message into it:
+
+```text
+Help me set up TapMirror (Android screen mirroring to Windows). Read https://raw.githubusercontent.com/Yany1944/TapMirror/main/docs/ai-setup.md and follow it step by step. Explain what you do and ask me before installing or changing anything.
+```
+
+Assistants that can run commands on your PC (Claude Code, Codex CLI, Cursor, Gemini CLI) do the checks themselves. A chat in the browser (ChatGPT, Claude, Gemini) gives you commands to run in PowerShell and reads what you paste back. Keep the phone and a USB cable nearby.
+
+The assistant follows [docs/ai-setup.md](docs/ai-setup.md); you can read it first. It lists everything it checks and changes and how to undo it, and it only downloads from GitHub (TapMirror, scrcpy) and Google (adb). Still, read each command before you allow it.
+
+If you prefer to do it yourself, the steps are below.
+
 ## Install
 
 ### 1. On the PC
@@ -188,7 +202,7 @@ Paste both into the form. They contain the versions, your setup (mode, root, VPN
 ```
 android/   phone app (Java, no libraries): tile, session service, setup checklist, settings
 windows/   tray app (C#, .NET Framework 4.8): UDP listener, scrcpy launcher, no-root setup window
-docs/      protocol, release steps, screenshots
+docs/      protocol, setup guide for AI assistants, release steps, screenshots
 ```
 
 Contributions are welcome; [CONTRIBUTING.md](CONTRIBUTING.md) explains how.
