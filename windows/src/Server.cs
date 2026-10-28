@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -18,6 +19,7 @@ namespace TapMirror
         public string Type;
         public readonly Dictionary<string, string> Kv = new Dictionary<string, string>();
         public IPEndPoint From;
+        public UdpClient Via;   // the socket it came in on; answers go out through it
 
         public string this[string key]
         {
@@ -53,6 +55,7 @@ namespace TapMirror
     {
         public string PhoneId, Tap, Name;
         public IPEndPoint Phone;
+        public volatile UdpClient Via;
         public int AdbPort;
         public Msg Request;
         public volatile Process Scrcpy;
@@ -66,7 +69,13 @@ namespace TapMirror
     {
         public const int Port = 27199;
 
-        static UdpClient udp;
+        // One socket for the whole port (broadcasts arrive there) plus one per local address:
+        // a unicast answer must come from the address the phone asked, or a VPN on the phone
+        // drops it. A PC with two addresses in one network (Ethernet and Wi-Fi) otherwise
+        // answers from whichever one Windows routes through.
+        static UdpClient anySocket;
+        static readonly Dictionary<IPAddress, UdpClient> addrSockets = new Dictionary<IPAddress, UdpClient>();
+        static readonly object socketLock = new object();
         static SynchronizationContext ui;
         // UI thread only
         static readonly Dictionary<string, Session> sessions = new Dictionary<string, Session>();
@@ -79,12 +88,62 @@ namespace TapMirror
         public static void Start(SynchronizationContext uiContext)
         {
             ui = uiContext;
-            udp = new UdpClient(new IPEndPoint(IPAddress.Any, Port));
+            anySocket = Open(IPAddress.Any);
+            UpdateAddressSockets();
+            NetworkChange.NetworkAddressChanged += (s, e) => UpdateAddressSockets();
+            Log.Write("listening on UDP " + Port);
+        }
+
+        static UdpClient Open(IPAddress addr)
+        {
+            var sock = new UdpClient(new IPEndPoint(addr, Port));
             // Child processes inherit handles: without this the adb server that scrcpy starts
             // keeps the port open after TapMirror exits.
-            SetHandleInformation(udp.Client.Handle, 1 /* HANDLE_FLAG_INHERIT */, 0);
-            new Thread(Listen) { IsBackground = true, Name = "udp" }.Start();
-            Log.Write("listening on UDP " + Port);
+            SetHandleInformation(sock.Client.Handle, 1 /* HANDLE_FLAG_INHERIT */, 0);
+            new Thread(() => Listen(sock)) { IsBackground = true, Name = "udp " + addr }.Start();
+            return sock;
+        }
+
+        /// <summary>IPv4 addresses of the active physical adapters, for showing to the user.</summary>
+        public static string LanAddresses()
+        {
+            var list = new List<string>();
+            foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.OperationalStatus != OperationalStatus.Up || ni.NetworkInterfaceType == NetworkInterfaceType.Loopback) continue;
+                string d = ni.Description + " " + ni.Name;
+                if (d.Contains("Virtual") || d.Contains("VMware") || d.Contains("vEthernet") || d.Contains("Hyper-V")) continue;
+                foreach (var ua in ni.GetIPProperties().UnicastAddresses)
+                    if (ua.Address.AddressFamily == AddressFamily.InterNetwork) list.Add(ua.Address.ToString());
+            }
+            return string.Join(", ", list);
+        }
+
+        /// <summary>Opens sockets for new local IPv4 addresses and closes those of vanished ones.</summary>
+        static void UpdateAddressSockets()
+        {
+            var current = new HashSet<IPAddress>();
+            foreach (var ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                if (ni.OperationalStatus != OperationalStatus.Up || ni.NetworkInterfaceType == NetworkInterfaceType.Loopback) continue;
+                foreach (var ua in ni.GetIPProperties().UnicastAddresses)
+                    if (ua.Address.AddressFamily == AddressFamily.InterNetwork) current.Add(ua.Address);
+            }
+            lock (socketLock)
+            {
+                foreach (var addr in new List<IPAddress>(addrSockets.Keys))
+                {
+                    if (current.Contains(addr)) continue;
+                    addrSockets[addr].Close();
+                    addrSockets.Remove(addr);
+                }
+                foreach (var addr in current)
+                {
+                    if (addrSockets.ContainsKey(addr)) continue;
+                    try { addrSockets[addr] = Open(addr); }
+                    catch (SocketException e) { Log.Write("can't listen on " + addr + ": " + e.Message); }
+                }
+            }
         }
 
         public static string StatusText()
@@ -94,27 +153,28 @@ namespace TapMirror
             return "Waiting for a phone";
         }
 
-        static void Send(IPEndPoint to, string type, params string[] kv)
+        static void Send(UdpClient via, IPEndPoint to, string type, params string[] kv)
         {
             byte[] data = Msg.Build(type, kv);
-            try { udp.Send(data, data.Length, to); } catch (Exception) { }
+            try { via.Send(data, data.Length, to); } catch (Exception) { }
         }
 
-        static void Listen()
+        static void Listen(UdpClient sock)
         {
             while (true)
             {
                 var from = new IPEndPoint(IPAddress.Any, 0);
                 byte[] data;
-                try { data = udp.Receive(ref from); }
+                try { data = sock.Receive(ref from); }
                 catch (SocketException) { continue; }
                 catch (ObjectDisposedException) { return; }
                 Msg m = Msg.Parse(data, from);
                 if (m == null) continue;
+                m.Via = sock;
                 if (m.Type == "HELLO")
                 {
                     Log.Write("HELLO from " + from + " (" + m["name"] + ")");
-                    Send(from, "HI", "pc", Config.PcId, "name", Environment.MachineName);
+                    Send(sock, from, "HI", "pc", Config.PcId, "name", Environment.MachineName);
                 }
                 else
                     ui.Post(_ => Handle(m), null);
@@ -135,7 +195,7 @@ namespace TapMirror
                 case "PING":
                     {
                         Session s = ByTap(m["tap"]);
-                        Send(m.From, "PONG", "tap", m["tap"], "state", s == null ? "none" : s.Running ? "running" : "connecting");
+                        Send(m.Via, m.From, "PONG", "tap", m["tap"], "state", s == null ? "none" : s.Running ? "running" : "connecting");
                         break;
                     }
                 case "STOP":
@@ -155,14 +215,15 @@ namespace TapMirror
         {
             string id = m["id"], tap = m["tap"];
             if (id == "" || tap == "") return;
-            if (Config.Blocked.ContainsKey(id)) { Send(m.From, "DENY", "tap", tap); return; }
+            if (Config.Blocked.ContainsKey(id)) { Send(m.Via, m.From, "DENY", "tap", tap); return; }
 
             Session existing;
             if (sessions.TryGetValue(id, out existing) && existing.Tap == tap)
             {
                 // a repeat of a request we already work on
                 existing.Phone = m.From;
-                Send(m.From, existing.Running ? "RUNNING" : "ACCEPT", "tap", tap);
+                existing.Via = m.Via;
+                Send(m.Via, m.From, existing.Running ? "RUNNING" : "ACCEPT", "tap", tap);
                 return;
             }
 
@@ -170,7 +231,7 @@ namespace TapMirror
             {
                 bool asking = pendingApproval.ContainsKey(id);
                 pendingApproval[id] = m; // keep the newest request
-                Send(m.From, "WAIT", "tap", tap);
+                Send(m.Via, m.From, "WAIT", "tap", tap);
                 if (!asking) AskApproval(id, m["name"], m.From.Address.ToString());
                 return;
             }
@@ -207,7 +268,7 @@ namespace TapMirror
             Log.Write((yes ? "allowed " : "blocked ") + name);
             if (m == null) return;
             if (yes) StartSession(m);
-            else Send(m.From, "DENY", "tap", m["tap"]);
+            else Send(m.Via, m.From, "DENY", "tap", m["tap"]);
         }
 
         static void StartSession(Msg m)
@@ -224,10 +285,10 @@ namespace TapMirror
             var s = new Session
             {
                 PhoneId = m["id"], Tap = m["tap"], Name = m["name"] == "" ? "Phone" : m["name"],
-                Phone = m.From, AdbPort = adbPort, Request = m,
+                Phone = m.From, Via = m.Via, AdbPort = adbPort, Request = m,
             };
             sessions[s.PhoneId] = s;
-            Send(s.Phone, "ACCEPT", "tap", s.Tap);
+            Send(s.Via, s.Phone, "ACCEPT", "tap", s.Tap);
             OnChanged();
             new Thread(() => Run(s)) { IsBackground = true, Name = "session" }.Start();
         }
@@ -285,7 +346,7 @@ namespace TapMirror
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        Send(s.Phone, "ENDED", "tap", s.Tap, "reason", error == null ? "closed" : "error", "msg", error ?? "");
+                        Send(s.Via, s.Phone, "ENDED", "tap", s.Tap, "reason", error == null ? "closed" : "error", "msg", error ?? "");
                         Thread.Sleep(100);
                     }
                 }
@@ -322,7 +383,7 @@ namespace TapMirror
             if (h != IntPtr.Zero)
             {
                 s.Running = true;
-                Send(s.Phone, "RUNNING", "tap", s.Tap);
+                Send(s.Via, s.Phone, "RUNNING", "tap", s.Tap);
                 ui.Post(_ => { Tools.BringToFront(h); OnChanged(); }, null);
             }
             else if (!p.HasExited)

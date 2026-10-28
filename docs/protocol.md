@@ -24,6 +24,8 @@ Values are URL-encoded (`+` or `%20` for a space). Unknown keys are ignored, so 
 | PC → phone | `PONG` | `tap`, `state` (`connecting`/`running`/`none`) | `none` means the PC has no such session. |
 | phone → PC | `STOP` | `tap` | The user stopped from the phone. |
 
+The PC answers a unicast message from the address it was sent to (it has one socket per local address), because a VPN on the phone drops answers from any other address. Answers to broadcasts can't pass such a VPN at all, so behind one the phone needs the PC's address: the last one it saw, one typed in by the user, or a sweep of the local /24.
+
 The phone repeats `START` every 1.5 s until it gets an answer. The PC treats a repeated `START` with the same `tap` as the same request.
 
 ### START options

@@ -116,6 +116,9 @@ namespace TapMirror
             var m = icon.ContextMenuStrip;
             m.Items.Clear();
             m.Items.Add(new ToolStripMenuItem(Server.StatusText()) { Enabled = false });
+            // for typing into the phone app when searching can't work (some VPNs)
+            string addrs = Server.LanAddresses();
+            if (addrs != "") m.Items.Add(new ToolStripMenuItem("This PC: " + addrs) { Enabled = false });
             m.Items.Add(new ToolStripSeparator());
             m.Items.Add("Mirror over USB", null, (s, e) => Server.StartUsb());
             m.Items.Add("Set up a phone without root…", null, (s, e) => SetupForm.ShowOnce());

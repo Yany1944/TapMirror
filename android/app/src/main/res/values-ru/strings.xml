@@ -41,6 +41,9 @@
     <string name="find_searching">Поиск…</string>
     <string name="find_result">Найден: %1$s</string>
     <string name="search">Искать</string>
+    <string name="enter_address">Ввести адрес</string>
+    <string name="address_title">Адрес ПК</string>
+    <string name="address_body">Его показывает меню TapMirror в трее на ПК («This PC: …»). Нужен, если поиск не находит ПК, например при VPN, который нельзя обойти.</string>
 
     <string name="step_access">3. Доступ к отладке</string>
     <string name="mode_label">Как включать adb</string>
@@ -67,10 +70,12 @@
     <string name="tile_not_added">Плитка: не добавлена</string>
     <string name="add_tile">Добавить плитку</string>
 
-    <string name="step_notif">6. Уведомления</string>
-    <string name="step_notif_body">Во время трансляции уведомление показывает статус и кнопку «Стоп».</string>
-    <string name="notif_on">Уведомления: разрешены</string>
-    <string name="notif_off">Уведомления: не разрешены</string>
+    <string name="step_notif">6. Уведомления или только плитка</string>
+    <string name="step_notif_body">С уведомлениями во время трансляции видно статус и кнопку «Стоп». Без них остаётся только плитка: она показывает статус, а ошибки видны на плитке и в этом приложении. Android требует уведомление для такой работы, поэтому «выключить» значит выключить уведомления TapMirror в настройках системы — тогда Android его скрывает.</string>
+    <string name="notif_tile_only">Уведомления: выключены, только плитка</string>
+    <string name="notif_turn_on">Включить</string>
+    <string name="notif_turn_off">Выключить (только плитка)</string>
+    <string name="notif_on">Уведомления: включены</string>
     <string name="allow">Разрешить</string>
 
     <string name="settings">Трансляция</string>

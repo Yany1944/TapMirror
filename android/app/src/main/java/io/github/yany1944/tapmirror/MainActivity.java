@@ -2,6 +2,7 @@ package io.github.yany1944.tapmirror;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.StatusBarManager;
 import android.content.ClipData;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -58,7 +60,8 @@ public class MainActivity extends Activity {
         });
         findViewById(R.id.btnDownload).setOnClickListener(v -> open(REPO + "/releases/latest"));
         findViewById(R.id.btnGithub).setOnClickListener(v -> open(REPO));
-        findViewById(R.id.btnFind).setOnClickListener(v -> findPcs());
+        findViewById(R.id.btnFind).setOnClickListener(v -> findPcs(p.pcIp()));
+        findViewById(R.id.btnAddress).setOnClickListener(v -> askAddress());
         findViewById(R.id.btnRoot).setOnClickListener(v -> checkRoot());
         findViewById(R.id.btnCopy).setOnClickListener(v -> {
             getSystemService(ClipboardManager.class)
@@ -73,7 +76,10 @@ public class MainActivity extends Activity {
             }
         });
         findViewById(R.id.btnTile).setOnClickListener(v -> addTile());
-        findViewById(R.id.btnNotif).setOnClickListener(v -> askNotifications());
+        findViewById(R.id.btnNotif).setOnClickListener(v -> {
+            if (notificationsAllowed()) openNotificationSettings();
+            else askNotifications();
+        });
         ((TextView) findViewById(R.id.tvCommand)).setText(grantCommand());
 
         spinner(R.id.spMode, R.array.mode_entries, R.array.mode_values, "mode", p.mode());
@@ -108,11 +114,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onRequestPermissionsResult(int code, String[] perms, int[] results) {
-        if (!notificationsAllowed()) {
-            // denied for good: only the system settings page can change it now
-            startActivity(new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                    .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName()));
-        }
         refreshSetup();
     }
 
@@ -156,9 +157,10 @@ public class MainActivity extends Activity {
         mark(R.id.tvTile, tile, getString(tile ? R.string.tile_added : R.string.tile_not_added));
         findViewById(R.id.btnTile).setVisibility(Build.VERSION.SDK_INT >= 33 ? View.VISIBLE : View.GONE);
 
+        // both are fine: with notifications off, the tile alone shows the state
         boolean notif = notificationsAllowed();
-        mark(R.id.tvNotif, notif, getString(notif ? R.string.notif_on : R.string.notif_off));
-        findViewById(R.id.btnNotif).setVisibility(notif ? View.GONE : View.VISIBLE);
+        mark(R.id.tvNotif, true, getString(notif ? R.string.notif_on : R.string.notif_tile_only));
+        ((Button) findViewById(R.id.btnNotif)).setText(notif ? R.string.notif_turn_off : R.string.notif_turn_on);
     }
 
     private void mark(int id, boolean ok, String text) {
@@ -171,7 +173,31 @@ public class MainActivity extends Activity {
         return "adb shell pm grant " + getPackageName() + " android.permission.WRITE_SECURE_SETTINGS";
     }
 
-    private void findPcs() {
+    /** For networks where searching can't work (some VPNs): the PC shows its address in the tray menu. */
+    private void askAddress() {
+        EditText input = new EditText(this);
+        input.setHint("192.168.1.10");
+        input.setInputType(android.text.InputType.TYPE_CLASS_PHONE);
+        if (p.pcIp() != null) input.setText(p.pcIp());
+        // the dialog gives a custom view no side margins of its own
+        android.widget.FrameLayout box = new android.widget.FrameLayout(this);
+        int pad = (int) (22 * getResources().getDisplayMetrics().density);
+        box.setPadding(pad, 0, pad, 0);
+        box.addView(input);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.address_title)
+                .setMessage(R.string.address_body)
+                .setView(box)
+                .setPositiveButton(android.R.string.ok, (d, w) -> {
+                    String ip = input.getText().toString().trim();
+                    if (ip.matches("\\d{1,3}(\\.\\d{1,3}){3}")) findPcs(ip);
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    /** Searches the network; {@code knownIp} is asked first, directly (works through VPNs). */
+    private void findPcs(String knownIp) {
         TextView tv = findViewById(R.id.tvPc);
         tv.setText(R.string.find_searching);
         new Thread(() -> {
@@ -182,7 +208,7 @@ public class MainActivity extends Activity {
                 error = getString(R.string.err_no_wifi);
             } else {
                 try (DatagramSocket s = Net.openSocket(wifi)) {
-                    pcs = Net.discover(this, s, wifi, p.phoneId(), p.pcIp());
+                    pcs = Net.discover(this, s, wifi, p.phoneId(), knownIp);
                 } catch (Exception e) {
                     error = e.toString();
                 }
@@ -247,13 +273,19 @@ public class MainActivity extends Activity {
     }
 
     private void askNotifications() {
-        if (Build.VERSION.SDK_INT >= 33
-                && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+        // the system asks only while the user hasn't refused for good; otherwise use its settings page
+        if (Build.VERSION.SDK_INT >= 33 && shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
+                || !p.sp.getBoolean("notif_asked", false)) {
+            p.put("notif_asked", true);
             requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
         } else {
-            startActivity(new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                    .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName()));
+            openNotificationSettings();
         }
+    }
+
+    private void openNotificationSettings() {
+        startActivity(new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName()));
     }
 
     private void open(String url) {

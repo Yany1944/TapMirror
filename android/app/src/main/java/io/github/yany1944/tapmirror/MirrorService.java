@@ -231,6 +231,8 @@ public class MirrorService extends Service {
         }
         PendingIntent stop = PendingIntent.getService(this, 1,
                 new Intent(this, MirrorService.class).setAction(ACTION_STOP), PendingIntent.FLAG_IMMUTABLE);
+        // With the app's notifications turned off in system settings ("tile only"), Android
+        // keeps the service running but doesn't show this anywhere except its task manager.
         return new Notification.Builder(this, "session")
                 .setSmallIcon(R.drawable.ic_tile)
                 .setContentTitle(title)

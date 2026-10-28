@@ -69,7 +69,7 @@ Tested on a Pixel 7 Pro (Android 17 beta, Magisk) with Windows 11, in both root 
    3. debugging access: **root**: tap "Check root" and grant it. **No root**: see below;
    4. Developer options on;
    5. add the quick settings tile;
-   6. allow notifications.
+   6. notifications on, or off for "tile only".
 3. Tap the tile. The first time, the PC asks whether to allow this phone.
 
 ### No root: one permission, once
@@ -110,6 +110,7 @@ On the phone (TapMirror app → Mirroring):
 | Turn the phone screen off while mirroring | off |
 | Keep the phone awake while mirroring | on |
 | After mirroring | put debugging back as it was / always turn it off |
+| Notifications (step 6) | on: status and Stop button; off (TapMirror's notifications turned off in system settings): tile only |
 
 On the PC, `%APPDATA%\TapMirror\TapMirror.ini` holds the scrcpy folder, an optional adb path, extra scrcpy options for every session (`args=`, for example `args=--window-borderless`), and the allowed/blocked phones. The tray menu covers the common cases. Logs: `%LOCALAPPDATA%\TapMirror\TapMirror.log` (tray menu → Open log).
 
@@ -118,6 +119,7 @@ On the PC, `%APPDATA%\TapMirror\TapMirror.ini` holds the scrcpy folder, an optio
 | Problem | Fix |
 |---|---|
 | "No PC answered" | Is TapMirror in the tray? Same network? Tray menu → "Allow through Windows Firewall" (shown only when the firewall may block it). Guest networks and AP isolation block devices from seeing each other. |
+| "No PC answered" with a VPN on the phone | VPNs that apps can't bypass let the phone reach the PC only at a known address. Search once with the VPN off, or tap "Enter address" in step 2 and type the address from the tray menu ("This PC: …"). After that it works with the VPN on. |
 | Window doesn't open, error about adb | The phone may be asking "Allow USB debugging?" for this PC: tick "Always allow". |
 | No root: "Wireless debugging didn't start on the phone" | Open Developer options → Wireless debugging on this network once and allow it ("Always allow on this network"). |
 | Banking app complains about debugging | Set "After mirroring" to "Always turn debugging off". |

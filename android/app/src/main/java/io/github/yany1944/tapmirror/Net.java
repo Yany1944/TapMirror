@@ -156,7 +156,11 @@ final class Net {
             long t = System.currentTimeMillis() - begun;
             if (found.isEmpty() && !swept && t > 500) {
                 Log.i(TAG, "no answer to broadcast, asking " + sweep.size() + " addresses");
-                for (InetSocketAddress a : sweep) send(s, a, hello);
+                // paced: a VPN app opens a flow per address and drops most of a sudden burst
+                for (int i = 0; i < sweep.size(); i++) {
+                    send(s, sweep.get(i), hello);
+                    if (i % 8 == 7) Thread.sleep(10);
+                }
                 swept = true;
             }
             if (found.isEmpty() && !resent && t > 1200) {

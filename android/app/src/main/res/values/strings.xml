@@ -47,6 +47,9 @@
     <string name="find_searching">Searching…</string>
     <string name="find_result">Found: %1$s</string>
     <string name="search">Search</string>
+    <string name="enter_address">Enter address</string>
+    <string name="address_title">PC address</string>
+    <string name="address_body">The TapMirror tray menu on the PC shows it (\"This PC: …\"). Useful when searching fails, for example behind a VPN that can\'t be bypassed.</string>
 
     <string name="step_access">3. Debugging access</string>
     <string name="mode_label">How to turn on adb</string>
@@ -73,10 +76,12 @@
     <string name="tile_not_added">Tile: not added</string>
     <string name="add_tile">Add tile</string>
 
-    <string name="step_notif">6. Notifications</string>
-    <string name="step_notif_body">While mirroring, a notification shows the status and a Stop button.</string>
-    <string name="notif_on">Notifications: allowed</string>
-    <string name="notif_off">Notifications: not allowed</string>
+    <string name="step_notif">6. Notifications or tile only</string>
+    <string name="step_notif_body">With notifications on, a notification shows the status and a Stop button while mirroring. With them off, there is only the tile: it shows the status, and errors appear on the tile and in this app. Android requires a notification for this kind of work, so \"off\" means turning TapMirror\'s notifications off in system settings; Android then hides it.</string>
+    <string name="notif_tile_only">Notifications: off, tile only</string>
+    <string name="notif_turn_on">Turn on</string>
+    <string name="notif_turn_off">Turn off (tile only)</string>
+    <string name="notif_on">Notifications: on</string>
     <string name="allow">Allow</string>
 
     <!-- settings -->
