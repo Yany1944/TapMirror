@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="size_entries">
+        <item>@string/size_full</item>
+        <item>2400</item>
+        <item>1920</item>
+        <item>1600</item>
+        <item>1280</item>
+        <item>1024</item>
+    </string-array>
+    <string-array name="size_values" translatable="false">
+        <item>0</item>
+        <item>2400</item>
+        <item>1920</item>
+        <item>1600</item>
+        <item>1280</item>
+        <item>1024</item>
+    </string-array>
+
+    <string-array name="bitrate_entries" translatable="false">
+        <item>4 Mbps</item>
+        <item>8 Mbps</item>
+        <item>16 Mbps</item>
+        <item>24 Mbps</item>
+        <item>32 Mbps</item>
+    </string-array>
+    <string-array name="bitrate_values" translatable="false">
+        <item>4</item>
+        <item>8</item>
+        <item>16</item>
+        <item>24</item>
+        <item>32</item>
+    </string-array>
+
+    <string-array name="fps_entries">
+        <item>@string/fps_any</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
+    <string-array name="fps_values" translatable="false">
+        <item>0</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
+
+    <string-array name="codec_entries" translatable="false">
+        <item>H.264</item>
+        <item>H.265</item>
+        <item>AV1</item>
+    </string-array>
+    <string-array name="codec_values" translatable="false">
+        <item>h264</item>
+        <item>h265</item>
+        <item>av1</item>
+    </string-array>
+
+    <string-array name="mode_entries">
+        <item>@string/mode_auto</item>
+        <item>@string/mode_root</item>
+        <item>@string/mode_wireless</item>
+    </string-array>
+    <string-array name="mode_values" translatable="false">
+        <item>auto</item>
+        <item>root</item>
+        <item>wireless</item>
+    </string-array>
+
+    <string-array name="after_entries">
+        <item>@string/after_restore</item>
+        <item>@string/after_off</item>
+    </string-array>
+    <string-array name="after_values" translatable="false">
+        <item>restore</item>
+        <item>off</item>
+    </string-array>
+</resources>

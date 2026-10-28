@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">TapMirror</string>
+    <string name="tile_label">Mirror to PC</string>
+    <string name="tagline">Mirror this phone to your Windows PC with one tap. Low latency, mouse and keyboard control, no cable. Built on scrcpy.</string>
+
+    <!-- status -->
+    <string name="st_idle">Not mirroring</string>
+    <string name="st_searching">Looking for your PC…</string>
+    <string name="st_connecting">Connecting to %1$s…</string>
+    <string name="st_approval">Confirm on %1$s</string>
+    <string name="st_approval_text">Allow this phone in the TapMirror window on the PC.</string>
+    <string name="st_mirroring">Mirroring to %1$s</string>
+    <string name="st_last_error">Last attempt failed: %1$s</string>
+    <string name="start">Start mirroring</string>
+    <string name="stop">Stop</string>
+    <string name="tile_connecting">Connecting…</string>
+    <string name="tile_approval">Confirm on PC</string>
+    <string name="tile_failed">Failed, open app</string>
+    <string name="channel_session">Mirroring session</string>
+    <string name="channel_error">Mirroring errors</string>
+
+    <!-- errors -->
+    <string name="err_title">Mirroring stopped</string>
+    <string name="err_no_wifi">Wi-Fi is off. The phone and the PC need the same network.</string>
+    <string name="err_no_pc">No PC answered. Is TapMirror running on the PC, on the same network? See Troubleshooting in the app.</string>
+    <string name="err_not_set_up">Debugging access isn\'t set up. Open TapMirror and finish step 3.</string>
+    <string name="err_root">Root access was denied.</string>
+    <string name="err_adb_start">adb didn\'t start on the phone.</string>
+    <string name="err_pc_no_answer">%1$s didn\'t answer.</string>
+    <string name="err_pc_lost">Lost connection to %1$s.</string>
+    <string name="err_denied">%1$s refused this phone. Remove it from the blocked list in the PC app to try again.</string>
+    <string name="err_approval_timeout">Nobody confirmed the phone on the PC.</string>
+    <string name="err_pc_failed">The PC couldn\'t start mirroring: %1$s</string>
+
+    <!-- setup -->
+    <string name="setup">Setup</string>
+    <string name="ok" translatable="false">✔</string>
+    <string name="todo" translatable="false">○</string>
+    <string name="step_pc">1. TapMirror on your PC</string>
+    <string name="step_pc_body">Download TapMirror.exe on your Windows PC and run it. It sits in the tray (no window, no console) and opens scrcpy when you tap the tile. It can download scrcpy for you.</string>
+    <string name="open_download">Open download page</string>
+
+    <string name="step_find">2. Find your PC</string>
+    <string name="step_find_body">Phone and PC must be on the same home network. If the PC isn\'t found, see Troubleshooting below.</string>
+    <string name="find_none">No PC found yet</string>
+    <string name="find_searching">Searching…</string>
+    <string name="find_result">Found: %1$s</string>
+    <string name="search">Search</string>
+
+    <string name="step_access">3. Debugging access</string>
+    <string name="mode_label">How to turn on adb</string>
+    <string name="access_root_ok">Root: granted</string>
+    <string name="access_root_no">Root: not available or denied</string>
+    <string name="access_root_unknown">Root: not checked yet</string>
+    <string name="access_wss_ok">No-root permission: granted</string>
+    <string name="access_wss_no">No-root permission: not granted</string>
+    <string name="access_root_body">With root, TapMirror turns on adb over Wi-Fi on port 5555 only while you mirror, and turns it off afterwards. Nothing else to do.</string>
+    <string name="access_wss_body">Without root, TapMirror switches Android\'s Wireless debugging. It needs one permission that only a PC can grant: in the TapMirror tray menu on the PC choose \"Set up phone without root…\", or run this command with the phone connected over USB:</string>
+    <string name="check_root">Check root</string>
+    <string name="copy_command">Copy command</string>
+    <string name="copied">Copied</string>
+
+    <string name="step_dev">4. Developer options</string>
+    <string name="step_dev_body">adb needs Developer options to be on: Settings → About phone → tap \"Build number\" 7 times. Without root, also open Wireless debugging once on your home Wi-Fi and allow it.</string>
+    <string name="dev_on">Developer options: on</string>
+    <string name="dev_off">Developer options: off</string>
+    <string name="open_dev">Open developer options</string>
+
+    <string name="step_tile">5. Quick settings tile</string>
+    <string name="step_tile_body">Add the \"Mirror to PC\" tile: tap it to start, tap again to stop. Long-press it to open this app.</string>
+    <string name="tile_added">Tile: added</string>
+    <string name="tile_not_added">Tile: not added</string>
+    <string name="add_tile">Add tile</string>
+
+    <string name="step_notif">6. Notifications</string>
+    <string name="step_notif_body">While mirroring, a notification shows the status and a Stop button.</string>
+    <string name="notif_on">Notifications: allowed</string>
+    <string name="notif_off">Notifications: not allowed</string>
+    <string name="allow">Allow</string>
+
+    <!-- settings -->
+    <string name="settings">Mirroring</string>
+    <string name="set_size">Max resolution</string>
+    <string name="set_bitrate">Video bitrate</string>
+    <string name="set_fps">Max frame rate</string>
+    <string name="set_codec">Video codec</string>
+    <string name="set_audio">Play phone audio on the PC</string>
+    <string name="set_screen_off">Turn the phone screen off while mirroring</string>
+    <string name="set_awake">Keep the phone awake while mirroring</string>
+    <string name="set_after">After mirroring</string>
+    <string name="after_restore">Put debugging back as it was</string>
+    <string name="after_off">Always turn debugging off</string>
+    <string name="size_full">Full</string>
+    <string name="fps_any">No limit</string>
+    <string name="mode_auto">Automatic (root, else Wireless debugging)</string>
+    <string name="mode_root">Root</string>
+    <string name="mode_wireless">Wireless debugging (no root)</string>
+
+    <!-- help -->
+    <string name="how">How it works</string>
+    <string name="how_body">1. You tap the tile. The phone sends a short message on your Wi-Fi to find the TapMirror app on your PC.\n2. The phone turns on adb (debugging) for this session only.\n3. The PC connects with adb and opens scrcpy: the phone screen in a window, controlled with mouse and keyboard.\n4. When you close the window, tap the tile again, or the PC goes away, the phone turns debugging back off.\n\nThe first time a phone asks, the PC shows a window to allow it.</string>
+    <string name="trouble">Troubleshooting</string>
+    <string name="trouble_body">• PC not found: make sure TapMirror is running (tray icon) and both devices are on the same network. Guest networks and \"AP isolation\" block this. In the tray menu, choose \"Allow through Windows Firewall\".\n• Some banking and government apps refuse to work while debugging is on. TapMirror turns it on only while you mirror; set \"After mirroring\" to \"Always turn debugging off\".\n• Without root, Wireless debugging turns itself off when you change Wi-Fi networks; allow it once on each network.\n• The phone may ask \"Allow USB debugging?\" for a new PC: tick \"Always allow\".</string>
+    <string name="github">Source code and help on GitHub</string>
+</resources>

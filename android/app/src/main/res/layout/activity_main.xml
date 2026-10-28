@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- status -->
+        <LinearLayout style="@style/Card">
+            <TextView
+                style="@style/Body"
+                android:text="@string/tagline" />
+            <TextView
+                android:id="@+id/tvStatus"
+                style="@style/Status"
+                android:layout_marginTop="12dp"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
+            <Button
+                android:id="@+id/btnToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/start" />
+        </LinearLayout>
+
+        <TextView style="@style/Section" android:text="@string/setup" />
+
+        <!-- 1. PC app -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/StepTitle" android:text="@string/step_pc" />
+            <TextView style="@style/Body" android:text="@string/step_pc_body" />
+            <Button android:id="@+id/btnDownload" style="@style/Action" android:text="@string/open_download" />
+        </LinearLayout>
+
+        <!-- 2. find PC -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/StepTitle" android:text="@string/step_find" />
+            <TextView android:id="@+id/tvPc" style="@style/Status" />
+            <TextView style="@style/Body" android:text="@string/step_find_body" />
+            <RadioGroup
+                android:id="@+id/pcGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button android:id="@+id/btnFind" style="@style/Action" android:text="@string/search" />
+        </LinearLayout>
+
+        <!-- 3. debugging access -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/StepTitle" android:text="@string/step_access" />
+            <TextView android:id="@+id/tvRoot" style="@style/Status" />
+            <TextView android:id="@+id/tvWss" style="@style/Status" />
+            <TextView style="@style/Label" android:text="@string/mode_label" />
+            <Spinner android:id="@+id/spMode" style="@style/Choice" />
+            <TextView style="@style/Body" android:text="@string/access_root_body" />
+            <Button android:id="@+id/btnRoot" style="@style/Action" android:text="@string/check_root" />
+            <TextView style="@style/Body" android:layout_marginTop="8dp" android:text="@string/access_wss_body" />
+            <TextView
+                android:id="@+id/tvCommand"
+                style="@style/Body"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/colorBackground"
+                android:fontFamily="monospace"
+                android:padding="8dp"
+                android:textIsSelectable="true" />
+            <Button android:id="@+id/btnCopy" style="@style/Action" android:text="@string/copy_command" />
+        </LinearLayout>
+
+        <!-- 4. developer options -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/StepTitle" android:text="@string/step_dev" />
+            <TextView android:id="@+id/tvDev" style="@style/Status" />
+            <TextView style="@style/Body" android:text="@string/step_dev_body" />
+            <Button android:id="@+id/btnDev" style="@style/Action" android:text="@string/open_dev" />
+        </LinearLayout>
+
+        <!-- 5. tile -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/StepTitle" android:text="@string/step_tile" />
+            <TextView android:id="@+id/tvTile" style="@style/Status" />
+            <TextView style="@style/Body" android:text="@string/step_tile_body" />
+            <Button android:id="@+id/btnTile" style="@style/Action" android:text="@string/add_tile" />
+        </LinearLayout>
+
+        <!-- 6. notifications -->
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/StepTitle" android:text="@string/step_notif" />
+            <TextView android:id="@+id/tvNotif" style="@style/Status" />
+            <TextView style="@style/Body" android:text="@string/step_notif_body" />
+            <Button android:id="@+id/btnNotif" style="@style/Action" android:text="@string/allow" />
+        </LinearLayout>
+
+        <TextView style="@style/Section" android:text="@string/settings" />
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/Label" android:layout_marginTop="0dp" android:text="@string/set_size" />
+            <Spinner android:id="@+id/spSize" style="@style/Choice" />
+            <TextView style="@style/Label" android:text="@string/set_bitrate" />
+            <Spinner android:id="@+id/spBitrate" style="@style/Choice" />
+            <TextView style="@style/Label" android:text="@string/set_fps" />
+            <Spinner android:id="@+id/spFps" style="@style/Choice" />
+            <TextView style="@style/Label" android:text="@string/set_codec" />
+            <Spinner android:id="@+id/spCodec" style="@style/Choice" />
+            <Switch android:id="@+id/swAudio" style="@style/Toggle" android:text="@string/set_audio" />
+            <Switch android:id="@+id/swScreenOff" style="@style/Toggle" android:text="@string/set_screen_off" />
+            <Switch android:id="@+id/swAwake" style="@style/Toggle" android:text="@string/set_awake" />
+            <TextView style="@style/Label" android:text="@string/set_after" />
+            <Spinner android:id="@+id/spAfter" style="@style/Choice" />
+        </LinearLayout>
+
+        <TextView style="@style/Section" android:text="@string/how" />
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/Body" android:layout_marginTop="0dp" android:text="@string/how_body" />
+        </LinearLayout>
+
+        <TextView style="@style/Section" android:text="@string/trouble" />
+
+        <LinearLayout style="@style/Card">
+            <TextView style="@style/Body" android:layout_marginTop="0dp" android:text="@string/trouble_body" />
+            <Button android:id="@+id/btnGithub" style="@style/Action" android:text="@string/github" />
+            <TextView
+                android:id="@+id/tvVersion"
+                style="@style/Body"
+                android:alpha="0.6" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

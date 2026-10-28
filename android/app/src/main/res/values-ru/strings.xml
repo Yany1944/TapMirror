@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tile_label">Экран на ПК</string>
+    <string name="tagline">Выводит экран телефона на ПК с Windows в одно касание. Малая задержка, управление мышью и клавиатурой, без кабеля. Работает на scrcpy.</string>
+
+    <string name="st_idle">Трансляция выключена</string>
+    <string name="st_searching">Ищу ПК…</string>
+    <string name="st_connecting">Подключение к %1$s…</string>
+    <string name="st_approval">Подтвердите на %1$s</string>
+    <string name="st_approval_text">Разрешите этот телефон в окне TapMirror на ПК.</string>
+    <string name="st_mirroring">Трансляция на %1$s</string>
+    <string name="st_last_error">Прошлая попытка не удалась: %1$s</string>
+    <string name="start">Начать трансляцию</string>
+    <string name="stop">Стоп</string>
+    <string name="tile_connecting">Подключение…</string>
+    <string name="tile_approval">Подтвердите на ПК</string>
+    <string name="tile_failed">Ошибка, откройте приложение</string>
+    <string name="channel_session">Трансляция</string>
+    <string name="channel_error">Ошибки трансляции</string>
+
+    <string name="err_title">Трансляция остановлена</string>
+    <string name="err_no_wifi">Wi-Fi выключен. Телефон и ПК должны быть в одной сети.</string>
+    <string name="err_no_pc">ПК не ответил. Запущен ли TapMirror на ПК в той же сети? См. «Если не работает» в приложении.</string>
+    <string name="err_not_set_up">Доступ к отладке не настроен. Откройте TapMirror и пройдите шаг 3.</string>
+    <string name="err_root">Root-доступ не выдан.</string>
+    <string name="err_adb_start">adb не запустился на телефоне.</string>
+    <string name="err_pc_no_answer">%1$s не ответил.</string>
+    <string name="err_pc_lost">Связь с %1$s потеряна.</string>
+    <string name="err_denied">%1$s отклонил этот телефон. Уберите его из списка заблокированных в программе на ПК.</string>
+    <string name="err_approval_timeout">Телефон не подтвердили на ПК.</string>
+    <string name="err_pc_failed">ПК не смог начать трансляцию: %1$s</string>
+
+    <string name="setup">Настройка</string>
+    <string name="step_pc">1. TapMirror на ПК</string>
+    <string name="step_pc_body">Скачайте TapMirror.exe на ПК с Windows и запустите. Он живёт в трее (без окон и консоли) и открывает scrcpy, когда вы нажимаете плитку. scrcpy он может скачать сам.</string>
+    <string name="open_download">Открыть страницу загрузки</string>
+
+    <string name="step_find">2. Найдите ПК</string>
+    <string name="step_find_body">Телефон и ПК должны быть в одной домашней сети. Если ПК не находится, смотрите «Если не работает» ниже.</string>
+    <string name="find_none">ПК пока не найден</string>
+    <string name="find_searching">Поиск…</string>
+    <string name="find_result">Найден: %1$s</string>
+    <string name="search">Искать</string>
+
+    <string name="step_access">3. Доступ к отладке</string>
+    <string name="mode_label">Как включать adb</string>
+    <string name="access_root_ok">Root: выдан</string>
+    <string name="access_root_no">Root: нет или отклонён</string>
+    <string name="access_root_unknown">Root: ещё не проверен</string>
+    <string name="access_wss_ok">Разрешение без root: выдано</string>
+    <string name="access_wss_no">Разрешение без root: не выдано</string>
+    <string name="access_root_body">С root TapMirror включает adb по Wi-Fi на порту 5555 только на время трансляции и потом выключает. Больше ничего делать не нужно.</string>
+    <string name="access_wss_body">Без root TapMirror переключает «Отладку по Wi-Fi» Android. Для этого нужно одно разрешение, которое может выдать только ПК: в меню TapMirror в трее выберите «Set up a phone without root…» или выполните команду, подключив телефон по USB:</string>
+    <string name="check_root">Проверить root</string>
+    <string name="copy_command">Скопировать команду</string>
+    <string name="copied">Скопировано</string>
+
+    <string name="step_dev">4. Параметры разработчика</string>
+    <string name="step_dev_body">adb работает только при включённых параметрах разработчика: Настройки → О телефоне → 7 раз нажмите «Номер сборки». Без root также один раз откройте «Отладку по Wi-Fi» в домашней сети и разрешите её.</string>
+    <string name="dev_on">Параметры разработчика: включены</string>
+    <string name="dev_off">Параметры разработчика: выключены</string>
+    <string name="open_dev">Открыть параметры разработчика</string>
+
+    <string name="step_tile">5. Плитка в шторке</string>
+    <string name="step_tile_body">Добавьте плитку «Экран на ПК»: нажатие включает, повторное выключает. Долгое нажатие открывает это приложение.</string>
+    <string name="tile_added">Плитка: добавлена</string>
+    <string name="tile_not_added">Плитка: не добавлена</string>
+    <string name="add_tile">Добавить плитку</string>
+
+    <string name="step_notif">6. Уведомления</string>
+    <string name="step_notif_body">Во время трансляции уведомление показывает статус и кнопку «Стоп».</string>
+    <string name="notif_on">Уведомления: разрешены</string>
+    <string name="notif_off">Уведомления: не разрешены</string>
+    <string name="allow">Разрешить</string>
+
+    <string name="settings">Трансляция</string>
+    <string name="set_size">Макс. разрешение</string>
+    <string name="set_bitrate">Битрейт видео</string>
+    <string name="set_fps">Макс. частота кадров</string>
+    <string name="set_codec">Видеокодек</string>
+    <string name="set_audio">Звук телефона на ПК</string>
+    <string name="set_screen_off">Гасить экран телефона во время трансляции</string>
+    <string name="set_awake">Не давать телефону засыпать</string>
+    <string name="set_after">После трансляции</string>
+    <string name="after_restore">Вернуть отладку как было</string>
+    <string name="after_off">Всегда выключать отладку</string>
+    <string name="size_full">Полное</string>
+    <string name="fps_any">Без ограничения</string>
+    <string name="mode_auto">Автоматически (root, иначе отладка по Wi-Fi)</string>
+    <string name="mode_root">Root</string>
+    <string name="mode_wireless">Отладка по Wi-Fi (без root)</string>
+
+    <string name="how">Как это работает</string>
+    <string name="how_body">1. Вы нажимаете плитку. Телефон отправляет короткое сообщение в Wi-Fi и находит TapMirror на ПК.\n2. Телефон включает adb (отладку) только на эту трансляцию.\n3. ПК подключается через adb и открывает scrcpy: экран телефона в окне с управлением мышью и клавиатурой.\n4. Когда вы закрываете окно, снова нажимаете плитку или ПК пропадает из сети, телефон выключает отладку обратно.\n\nВ первый раз ПК покажет окно с вопросом, разрешить ли этот телефон.</string>
+    <string name="trouble">Если не работает</string>
+    <string name="trouble_body">• ПК не находится: проверьте, что TapMirror запущен (значок в трее) и оба устройства в одной сети. Гостевые сети и «изоляция клиентов» на роутере мешают. В меню трея выберите «Allow through Windows Firewall».\n• Некоторые банковские и госприложения не работают при включённой отладке. TapMirror включает её только на время трансляции; поставьте «После трансляции» → «Всегда выключать отладку».\n• Без root отладка по Wi-Fi сама выключается при смене сети; разрешите её один раз в каждой сети.\n• Для нового ПК телефон спросит «Разрешить отладку?»: отметьте «Всегда разрешать».</string>
+    <string name="github">Исходный код и справка на GitHub</string>
+</resources>

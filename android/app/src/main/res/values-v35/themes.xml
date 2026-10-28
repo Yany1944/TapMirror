@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- keep the classic layout under the action bar on Android 15+ -->
+    <style name="Theme.TapMirror" parent="@android:style/Theme.DeviceDefault.DayNight">
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
+</resources>

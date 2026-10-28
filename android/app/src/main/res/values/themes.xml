@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand">#FF3D7BFD</color>
+    <color name="ok">#FF2E9E5B</color>
+    <color name="todo">#FFE08A00</color>
+
+    <style name="Theme.TapMirror" parent="@android:style/Theme.DeviceDefault.DayNight" />
+
+    <style name="Card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:background">@drawable/card</item>
+    </style>
+
+    <style name="Section">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Large</item>
+    </style>
+
+    <style name="StepTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Medium</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Status">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Body">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Small</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
+    </style>
+
+    <style name="Action" parent="@android:style/Widget.DeviceDefault.Button.Borderless.Colored">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Small</item>
+    </style>
+
+    <style name="Choice">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">40dp</item>
+    </style>
+
+    <style name="Toggle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:minHeight">40dp</item>
+    </style>
+</resources>
