@@ -6,6 +6,13 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-29
+
+### Added
+
+- Video toggle: "Mirror phone video to the PC" in the phone app's settings. When turned off, scrcpy runs with `--no-video` for audio-only streaming. / Переключатель «Передавать видео» в настройках приложения. При выключении scrcpy запускается с параметром `--no-video` для трансляции только звука.
+- Status notification in the shade indicates "Video transmission disabled" when video streaming is turned off. / В уведомлении в шторке указывается «Передача видео отключена», если трансляция видео выключена.
+
 ## [0.1.1] - 2026-10-29
 
 ### Added
@@ -61,6 +68,7 @@ First public version. Tested on one phone and one PC (see "Tested on" in the REA
 
 </details>
 
-[Unreleased]: https://github.com/Yany1944/TapMirror/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/Yany1944/TapMirror/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/Yany1944/TapMirror/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/Yany1944/TapMirror/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/Yany1944/TapMirror/releases/tag/v0.1.0

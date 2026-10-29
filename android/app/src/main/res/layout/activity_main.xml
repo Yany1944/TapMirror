@@ -127,6 +127,7 @@
             <Spinner android:id="@+id/spFps" style="@style/Choice" />
             <TextView style="@style/Label" android:text="@string/set_codec" />
             <Spinner android:id="@+id/spCodec" style="@style/Choice" />
+            <Switch android:id="@+id/swVideo" style="@style/Toggle" android:text="@string/set_video" />
             <Switch android:id="@+id/swAudio" style="@style/Toggle" android:text="@string/set_audio" />
             <Switch android:id="@+id/swScreenOff" style="@style/Toggle" android:text="@string/set_screen_off" />
             <Switch android:id="@+id/swAwake" style="@style/Toggle" android:text="@string/set_awake" />

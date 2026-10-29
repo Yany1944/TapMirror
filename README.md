@@ -141,6 +141,7 @@ On the phone, under "Mirroring" in the app:
 | Video bitrate | 8 Mbps | scrcpy `--video-bit-rate` |
 | Max frame rate | No limit | scrcpy `--max-fps` |
 | Video codec | H.264 | scrcpy `--video-codec` |
+| Mirror phone video to the PC | On | scrcpy `--no-video` when off |
 | Play phone audio on the PC | On | scrcpy `--no-audio` when off |
 | Turn the phone screen off while mirroring | Off | scrcpy `--turn-screen-off` |
 | Keep the phone awake while mirroring | On | scrcpy `--stay-awake` |

@@ -98,7 +98,24 @@ public class MainActivity extends Activity {
         spinner(R.id.spFps, R.array.fps_entries, R.array.fps_values, "max_fps", p.maxFps());
         spinner(R.id.spCodec, R.array.codec_entries, R.array.codec_values, "codec", p.codec());
         spinner(R.id.spAfter, R.array.after_entries, R.array.after_values, "after", p.after());
-        toggle(R.id.swAudio, "audio", p.audio());
+        Switch swVideo = findViewById(R.id.swVideo);
+        Switch swAudio = findViewById(R.id.swAudio);
+        swVideo.setChecked(p.video());
+        swAudio.setChecked(p.audio());
+        swVideo.setOnCheckedChangeListener((b, on) -> {
+            if (!on && !swAudio.isChecked()) {
+                swAudio.setChecked(true);
+                p.put("audio", true);
+            }
+            p.put("video", on);
+        });
+        swAudio.setOnCheckedChangeListener((b, on) -> {
+            if (!on && !swVideo.isChecked()) {
+                swVideo.setChecked(true);
+                p.put("video", true);
+            }
+            p.put("audio", on);
+        });
         toggle(R.id.swScreenOff, "screen_off", p.screenOff());
         toggle(R.id.swAwake, "stay_awake", p.stayAwake());
 
@@ -143,7 +160,9 @@ public class MainActivity extends Activity {
                 status.setText(getString(R.string.st_approval, d) + "\n" + getString(R.string.st_approval_text));
                 break;
             case MirrorService.MIRRORING:
-                status.setText(getString(R.string.st_mirroring, d));
+                String text = getString(R.string.st_mirroring, d);
+                if (!p.video()) text += "\n" + getString(R.string.notif_no_video);
+                status.setText(text);
                 break;
             default:
                 status.setText(d.isEmpty() ? getString(R.string.st_idle) : getString(R.string.st_last_error, d));

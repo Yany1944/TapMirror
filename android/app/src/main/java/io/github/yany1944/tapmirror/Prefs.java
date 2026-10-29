@@ -50,6 +50,7 @@ final class Prefs {
     String bitrate() { return sp.getString("bitrate", "8"); }
     String maxFps() { return sp.getString("max_fps", "0"); }
     String codec() { return sp.getString("codec", "h264"); }
+    boolean video() { return sp.getBoolean("video", true); }
     boolean audio() { return sp.getBoolean("audio", true); }
     boolean screenOff() { return sp.getBoolean("screen_off", false); }
     boolean stayAwake() { return sp.getBoolean("stay_awake", true); }

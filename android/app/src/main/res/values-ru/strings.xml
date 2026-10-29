@@ -91,9 +91,11 @@
     <string name="set_bitrate">Битрейт видео</string>
     <string name="set_fps">Макс. частота кадров</string>
     <string name="set_codec">Видеокодек</string>
+    <string name="set_video">Передавать видео</string>
     <string name="set_audio">Звук телефона на ПК</string>
     <string name="set_screen_off">Гасить экран телефона во время трансляции</string>
     <string name="set_awake">Не давать телефону засыпать</string>
+    <string name="notif_no_video">Передача видео отключена</string>
     <string name="set_after">После трансляции</string>
     <string name="after_restore">Вернуть отладку как было</string>
     <string name="after_off">Всегда выключать отладку</string>

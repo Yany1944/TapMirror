@@ -36,6 +36,7 @@ The phone repeats `START` every 1.5 s until it gets an answer. The PC treats a r
 | `bitrate` | 1–200 (Mbps) | `--video-bit-rate` |
 | `fps` | 0 (no limit) or 1–240 | `--max-fps` |
 | `codec` | `h264`, `h265`, `av1` | `--video-codec` |
+| `video` | `0`/`1` | `--no-video` when 0 |
 | `audio` | `0`/`1` | `--no-audio` when 0 |
 | `screenoff` | `0`/`1` | `--turn-screen-off` |
 | `awake` | `0`/`1` | `--stay-awake` |

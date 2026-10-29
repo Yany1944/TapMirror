@@ -106,8 +106,9 @@ public class MirrorService extends Service {
             String tap = Long.toString(new SecureRandom().nextLong() & Long.MAX_VALUE, 36);
             byte[] start = Net.Msg.build("START", "id", p.phoneId(), "tap", tap, "name", Build.MODEL,
                     "adb", String.valueOf(port), "size", p.maxSize(), "bitrate", p.bitrate(),
-                    "fps", p.maxFps(), "codec", p.codec(), "audio", flag(p.audio()),
-                    "screenoff", flag(p.screenOff()), "awake", flag(p.stayAwake()));
+                    "fps", p.maxFps(), "codec", p.codec(), "video", flag(p.video()),
+                    "audio", flag(p.audio()), "screenoff", flag(p.screenOff()),
+                    "awake", flag(p.stayAwake()));
             talk(s, pc, tap, start);
         } catch (Exception e) {
             Log.w(Net.TAG, "session failed", e);
@@ -215,6 +216,7 @@ public class MirrorService extends Service {
     private Notification sessionNotification() {
         String title;
         String text = null;
+        Prefs p = new Prefs(this);
         switch (state) {
             case CONNECTING:
                 title = getString(R.string.st_connecting, detail);
@@ -228,6 +230,9 @@ public class MirrorService extends Service {
                 break;
             default:
                 title = getString(R.string.st_searching);
+        }
+        if (text == null && !p.video()) {
+            text = getString(R.string.notif_no_video);
         }
         PendingIntent stop = PendingIntent.getService(this, 1,
                 new Intent(this, MirrorService.class).setAction(ACTION_STOP), PendingIntent.FLAG_IMMUTABLE);

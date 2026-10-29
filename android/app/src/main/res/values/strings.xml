@@ -99,9 +99,11 @@
     <string name="set_bitrate">Video bitrate</string>
     <string name="set_fps">Max frame rate</string>
     <string name="set_codec">Video codec</string>
+    <string name="set_video">Mirror phone video to the PC</string>
     <string name="set_audio">Play phone audio on the PC</string>
     <string name="set_screen_off">Turn the phone screen off while mirroring</string>
     <string name="set_awake">Keep the phone awake while mirroring</string>
+    <string name="notif_no_video">Video transmission disabled</string>
     <string name="set_after">After mirroring</string>
     <string name="after_restore">Put debugging back as it was</string>
     <string name="after_off">Always turn debugging off</string>

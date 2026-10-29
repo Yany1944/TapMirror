@@ -141,6 +141,7 @@ adb shell pm grant io.github.yany1944.tapmirror android.permission.WRITE_SECURE_
 | Битрейт видео | 8 Мбит/с | `--video-bit-rate` |
 | Макс. частота кадров | Без ограничения | `--max-fps` |
 | Видеокодек | H.264 | `--video-codec` |
+| Передавать видео | Вкл. | `--no-video`, если выключено |
 | Звук телефона на ПК | Вкл. | `--no-audio`, если выключено |
 | Гасить экран телефона во время трансляции | Выкл. | `--turn-screen-off` |
 | Не давать телефону засыпать | Вкл. | `--stay-awake` |

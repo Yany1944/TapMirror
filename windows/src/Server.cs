@@ -475,6 +475,7 @@ namespace TapMirror
             if (int.TryParse(m["fps"], out v) && v >= 1 && v <= 240) a.Add("--max-fps " + v);
             string codec = m["codec"];
             if (codec == "h264" || codec == "h265" || codec == "av1") a.Add("--video-codec " + codec);
+            if (m["video"] == "0") a.Add("--no-video");
             if (m["audio"] == "0") a.Add("--no-audio");
             if (m["screenoff"] == "1") a.Add("--turn-screen-off");
             if (m["awake"] == "1") a.Add("--stay-awake");
