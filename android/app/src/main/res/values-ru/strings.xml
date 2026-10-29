@@ -39,6 +39,10 @@
     <string name="update_stop_first">Сначала остановите трансляцию: обновление закроет приложение.</string>
     <string name="update_failed">Не удалось обновить: %1$s</string>
     <string name="update_bad_checksum">Скачанный файл не совпадает с контрольной суммой. Попробуйте позже.</string>
+    <string name="check_updates">Проверить обновления</string>
+    <string name="checking_updates">Проверка обновлений…</string>
+    <string name="update_latest">У вас установлена последняя версия (%1$s)</string>
+    <string name="check_updates_failed">Не удалось проверить обновления</string>
 
     <string name="setup">Настройка</string>
     <string name="step_pc">1. TapMirror на ПК</string>

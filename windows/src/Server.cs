@@ -299,7 +299,11 @@ namespace TapMirror
             if (p == null) return;
             try
             {
-                if (!p.HasExited && !p.CloseMainWindow()) p.Kill();
+                if (!p.HasExited)
+                {
+                    if (p.CloseMainWindow()) p.WaitForExit(1000);
+                    if (!p.HasExited) p.Kill();
+                }
             }
             catch { }
         }
@@ -355,7 +359,11 @@ namespace TapMirror
                     Log.Write("session error: " + error);
                     Tray.Balloon("Mirroring " + s.Name + " failed: " + error, ToolTipIcon.Error);
                 }
-                if (serial != null) Tools.Adb("disconnect " + serial, 3000);
+                if (serial != null)
+                {
+                    if (s.Request["screenoff"] == "1") Tools.Adb("-s " + serial + " shell input keyevent 224", 2000);
+                    Tools.Adb("disconnect " + serial, 3000);
+                }
                 Tools.StopAdbServerIfOurs(serverWasRunning);
                 ui.Post(_ =>
                 {

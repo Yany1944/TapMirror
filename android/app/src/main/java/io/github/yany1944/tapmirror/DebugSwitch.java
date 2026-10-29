@@ -108,6 +108,7 @@ final class DebugSwitch {
         try {
             if (Prefs.MODE_ROOT.equals(p.sp.getString("session_mode", null))) {
                 su("(resetprop -d service.adb.tcp.port || setprop service.adb.tcp.port 0) 2>/dev/null"
+                        + "; input keyevent 224"
                         + "; " + put(ADB_WIFI, wifi) + "; " + put(ADB, adb)
                         // restart adbd so it stops listening on the port (it keeps running for USB)
                         + (adb == 1 ? "; stop adbd; start adbd" : ""));

@@ -86,6 +86,7 @@ public class MainActivity extends Activity {
             }
         });
         findViewById(R.id.btnTile).setOnClickListener(v -> addTile());
+        findViewById(R.id.btnCheckUpdates).setOnClickListener(v -> checkUpdateManual());
         findViewById(R.id.btnNotif).setOnClickListener(v -> {
             if (notificationsAllowed()) openNotificationSettings();
             else askNotifications();
@@ -121,6 +122,7 @@ public class MainActivity extends Activity {
 
         try {
             String v = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            ((TextView) findViewById(R.id.tvVersionTop)).setText("v " + v);
             ((TextView) findViewById(R.id.tvVersion)).setText("TapMirror " + v);
         } catch (PackageManager.NameNotFoundException ignored) {
         }
@@ -243,6 +245,39 @@ public class MainActivity extends Activity {
                 if (tag != null) {
                     ((TextView) findViewById(R.id.tvUpdate)).setText(getString(R.string.update_available,
                             Updater.version(tag), Updater.currentVersion(this)));
+                }
+            });
+        }).start();
+    }
+
+    private void checkUpdateManual() {
+        Button btn = findViewById(R.id.btnCheckUpdates);
+        btn.setEnabled(false);
+        Toast.makeText(this, R.string.checking_updates, Toast.LENGTH_SHORT).show();
+        new Thread(() -> {
+            String tag = null;
+            boolean err = false;
+            try {
+                tag = Updater.newerTag(this, p, true);
+            } catch (Exception e) {
+                err = true;
+            }
+            final String finalTag = tag;
+            final boolean finalErr = err;
+            runOnUiThread(() -> {
+                btn.setEnabled(true);
+                if (finalErr) {
+                    Toast.makeText(this, R.string.check_updates_failed, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                updateTag = finalTag;
+                findViewById(R.id.cardUpdate).setVisibility(finalTag != null ? View.VISIBLE : View.GONE);
+                if (finalTag != null) {
+                    ((TextView) findViewById(R.id.tvUpdate)).setText(getString(R.string.update_available,
+                            Updater.version(finalTag), Updater.currentVersion(this)));
+                } else {
+                    Toast.makeText(this, getString(R.string.update_latest, Updater.currentVersion(this)),
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         }).start();

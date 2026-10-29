@@ -11,6 +11,46 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- header: app title, version, check updates button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/Section"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:text="@string/app_name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvVersionTop"
+                    style="@style/Body"
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:alpha="0.6" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnCheckUpdates"
+                style="@style/Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/check_updates" />
+        </LinearLayout>
+
         <!-- shown when a newer release is on GitHub -->
         <LinearLayout
             android:id="@+id/cardUpdate"

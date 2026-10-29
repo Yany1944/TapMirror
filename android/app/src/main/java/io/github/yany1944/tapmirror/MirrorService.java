@@ -115,6 +115,7 @@ public class MirrorService extends Service {
             error = e.getMessage() != null ? e.getMessage() : e.toString();
         } finally {
             if (s != null) s.close();
+            if (p.screenOff()) wakeScreen();
             DebugSwitch.disable(this, p);
             if (error != null) showError(error);
             detail = error != null ? error : "";
@@ -135,6 +136,7 @@ public class MirrorService extends Service {
                 byte[] stop = Net.Msg.build("STOP", "tap", tap);
                 Net.send(s, pc.addr, stop);
                 Net.send(s, pc.addr, stop);
+                try { Thread.sleep(350); } catch (InterruptedException ignored) {}
                 return;
             }
             if (!accepted && now - lastSent > 1500) {
@@ -263,5 +265,23 @@ public class MirrorService extends Service {
     private PendingIntent openApp() {
         return PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class),
                 PendingIntent.FLAG_IMMUTABLE);
+    }
+
+    private void wakeScreen() {
+        try {
+            android.os.PowerManager pm = (android.os.PowerManager) getSystemService(Context.POWER_SERVICE);
+            if (pm != null) {
+                android.os.PowerManager.WakeLock wl = pm.newWakeLock(
+                        android.os.PowerManager.SCREEN_BRIGHT_WAKE_LOCK | android.os.PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                        "tapmirror:wake");
+                wl.acquire(1500);
+                wl.release();
+            }
+        } catch (Exception ignored) {}
+        try {
+            if (DebugSwitch.hasRoot()) {
+                DebugSwitch.su("input keyevent 224");
+            }
+        } catch (Exception ignored) {}
     }
 }

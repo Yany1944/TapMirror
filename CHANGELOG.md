@@ -12,6 +12,11 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 
 - Video toggle: "Mirror phone video to the PC" in the phone app's settings. When turned off, scrcpy runs with `--no-video` for audio-only streaming. / Переключатель «Передавать видео» в настройках приложения. При выключении scrcpy запускается с параметром `--no-video` для трансляции только звука.
 - Status notification in the shade indicates "Video transmission disabled" when video streaming is turned off. / В уведомлении в шторке указывается «Передача видео отключена», если трансляция видео выключена.
+- App header on the phone shows version and a "Check for updates" button to manually check GitHub for releases. / В верхней шапке приложения на телефоне отображается версия и кнопка «Проверить обновления» для ручной проверки релизов на GitHub.
+
+### Fixed
+
+- Waking phone screen on session stop: when mirroring with "Turn screen off" was stopped from the PC or the phone app, the screen now turns back on reliably. / Включение экрана телефона при завершении: если трансляция с погашением экрана останавливалась с ПК или из приложения на телефоне, экран теперь надёжно включается обратно.
 
 ## [0.1.1] - 2026-10-29
 

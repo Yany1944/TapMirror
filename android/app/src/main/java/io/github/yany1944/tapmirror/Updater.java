@@ -42,8 +42,12 @@ final class Updater {
 
     /** The tag of a newer release ("v0.1.2"), from the cache or from GitHub; null if there is none. */
     static String newerTag(Context c, Prefs p) throws Exception {
+        return newerTag(c, p, false);
+    }
+
+    static String newerTag(Context c, Prefs p, boolean force) throws Exception {
         long now = System.currentTimeMillis();
-        if (now - p.sp.getLong("update_checked", 0) > CHECK_EVERY_MS) {
+        if (force || now - p.sp.getLong("update_checked", 0) > CHECK_EVERY_MS) {
             JSONObject release = new JSONObject(new String(get(API), "UTF-8"));
             p.sp.edit().putString("update_tag", release.optString("tag_name", "")).putLong("update_checked", now).apply();
         }

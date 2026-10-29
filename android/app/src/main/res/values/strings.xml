@@ -43,6 +43,10 @@
     <string name="update_stop_first">Stop mirroring first: the update closes the app.</string>
     <string name="update_failed">Update failed: %1$s</string>
     <string name="update_bad_checksum">The downloaded file doesn\'t match its checksum. Try again later.</string>
+    <string name="check_updates">Check for updates</string>
+    <string name="checking_updates">Checking for updates…</string>
+    <string name="update_latest">You have the latest version (%1$s)</string>
+    <string name="check_updates_failed">Couldn\'t check for updates</string>
 
     <!-- setup -->
     <string name="setup">Setup</string>
